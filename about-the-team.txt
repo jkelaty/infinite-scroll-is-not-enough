@@ -5,4 +5,7 @@ Xuejin Gao
 I'm a computer science major at Hunter College. I'm interested about learning AI and machine learning and the implementation of them so I can create mini game projects from scratch. Outside of CS, I really enjoy eating food and any sports activity.
 
 Benjamin Pulatov
-I'm a comp sci major at Hunter who's an Android enthusiast and who wants to just learn more about the world of computing. Not much more I want to share here.  
+I'm a comp sci major at Hunter who's an Android enthusiast and who wants to just learn more about the world of computing. Not much more I want to share here.
+
+Jonathan Kelaty
+I'm a CS major at Hunter College. I'm passionate about free and open source software and excited to get into software engineering after I graduate.
