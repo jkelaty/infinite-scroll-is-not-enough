@@ -1,2 +1,5 @@
 Ka Ming Wong
 I'm a first-generation immigrant from Hong Kong with an interest in boating, reading, activism, and language learning. Learning how to code to me is about learning another tool.
+
+Xuejin Gao
+I'm a computer science major at Hunter College. I'm interested about learning AI and machine learning and the implementation of them so I can create mini game projects from scratch. Outside of CS, I really enjoy eating food and any sports activity.
