@@ -4,6 +4,7 @@ module.exports = {
     description: `AI generated tweets from your favorite Twitter users.`,
     siteUrl: `https://gatsby-starter-blog-demo.netlify.app/`,
   },
+  pathPrefix: "/infinite-scroll-is-not-enough",
   plugins: [
     {
       resolve: `gatsby-source-filesystem`,
