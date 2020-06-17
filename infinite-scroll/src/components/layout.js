@@ -1,11 +1,12 @@
 import React from "react"
 import NavBar from "./navbar"
+import "./layout.scss"
 
-const Layout = ({ location, title, children }) => {
-  const darkMode = true;
+const Layout = ({ title, children }) => {
+  var darkMode = false;
 
   return (
-    <div className={`infinite-scroll` + (darkMode ? ` ui-black` : null)}>
+    <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
       <header>
         <NavBar title={title}/>
       </header>
@@ -21,3 +22,12 @@ const Layout = ({ location, title, children }) => {
 }
 
 export default Layout
+
+// TODO:
+// dark mode
+// navbar search + logo
+// infinite scroll
+// like tweet animation + callback
+// share + callback
+
+// navbar: dark mode toggle, logo, info, and search bar

@@ -1,4 +1,5 @@
 import React from "react"
+import queryString from 'query-string'
 import { PageProps, graphql } from "gatsby"
 
 import Tweet from "../components/tweet"
@@ -20,11 +21,15 @@ const Index = ({ data, location }: PageProps<Data>) => {
   var tweets = []
 
   for (let i = 0; i < count; ++i) {
-    tweets.push(<Tweet />)
+    tweets.push(<Tweet key={i} />)
+  }
+
+  if (location.search) {
+    alert(queryString.parse(location.search).user)
   }
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout title={siteTitle}>
       <SEO title={siteTitle} />
       {tweets}
     </Layout>
