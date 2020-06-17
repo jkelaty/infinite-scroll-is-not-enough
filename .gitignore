@@ -1,3 +1,6 @@
 infinite-scroll/node_modules/
 infinite-scroll/.cache/
 .DS_Store
+
+mongo/.env
+mongo/.flaskenv
