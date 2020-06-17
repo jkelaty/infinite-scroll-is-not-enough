@@ -1,2 +1,2 @@
-# infinite-scroll-is-not-enough
+# Infinite Scroll Is Not Enough
  

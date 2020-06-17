@@ -1,0 +1,159 @@
+html {
+    background: rgb(21, 32, 43);
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+body {
+    margin: 0;
+}
+
+.tweets {
+    position: relative;
+    max-width: 600px;
+    text-align: center;
+    margin: auto;
+    border-left: 1px solid rgb(56, 68, 77);
+    border-right: 1px solid rgb(56, 68, 77);
+    top: 54px;
+}
+
+@media only screen and (max-width: 600px) {
+    .tweets {
+        border: none;
+    }
+}
+
+.tweet {
+    display: flex;
+    text-align: left;
+    background: rgb(21, 32, 43);
+    color: white;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgb(56, 68, 77);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+    cursor: pointer;
+}
+
+.tweet:hover {
+    background: rgb(25, 39, 52) !important;
+    transition: 0.2s background-color;
+}
+
+.tweet-profile-image {
+    display: flex;
+    margin-right: 10px;
+    border-radius: 100%;
+    user-select: none;
+    height: 50px;
+    width: 50px;
+}
+
+.tweet-content {
+    line-height: 1.3125;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.tweet-name-date {
+    margin-bottom: 2px;
+}
+
+.tweet-profile-name {
+    font-weight: 700;
+}
+
+.tweet-profile-handle {
+    color: rgb(136, 153, 166);
+    margin-left: 5px;
+}
+
+.tweet-separator {
+    color: rgb(136, 153, 166);
+    padding: 0 5px;
+}
+
+.tweet-date {
+    color: rgb(136, 153, 166);
+}
+
+.tweet-profile-name:hover, .tweet-date:hover {
+    text-decoration: underline;
+}
+
+.tweet-icons {
+    margin-top: 10px;
+}
+
+.icon-wrapper {
+    display: inline-block;
+    width: 25%;
+    height: 1.25em;
+}
+
+.icon-wrapper-inner {
+    border: 0 solid black;
+    border-radius: 100%;
+    position: absolute;
+    padding: 7px;
+    display: inline-flex;
+    transform: translate(-7px, -7px);
+}
+
+.tweet-icon {
+    width: 1.25em;
+    user-select: none;
+    fill: rgb(136, 153, 166);;
+}
+
+.icon-count {
+    font-size: 13px;
+    color: rgb(136, 153, 166);
+    margin-left: 27px;
+    user-select: none;
+    vertical-align: super;
+}
+
+.icon-wrapper-inner, .tweet-icon, .icon-count {
+    transition: all 0.2s;
+}
+
+/* Comments and Share Icons */
+.icon-wrapper-outer-comments:hover .icon-wrapper-inner-comments, .icon-wrapper-outer-share:hover .icon-wrapper-inner-share {
+    background: rgba(29, 161, 242, 0.1);
+}
+.icon-wrapper-outer-comments:hover .tweet-icon, .icon-wrapper-outer-share:hover .tweet-icon {
+    fill: rgb(29, 161, 242);
+}
+.icon-wrapper-outer-comments:hover .icon-count {
+    color: rgb(29, 161, 242);
+}
+
+/* Retweet Icon */
+.icon-wrapper-outer-retweet:hover .icon-wrapper-inner-retweet {
+    background: rgba(23, 191, 99, 0.1);
+}
+.icon-wrapper-outer-retweet:hover .tweet-icon {
+    fill: rgb(23, 191, 99);
+}
+.icon-wrapper-outer-retweet:hover .icon-count {
+    color: rgb(23, 191, 99);
+}
+
+/* Like Icon */
+.icon-wrapper-outer-like:hover .icon-wrapper-inner-like {
+    background: rgba(224, 36, 94, 0.1);
+}
+.icon-wrapper-outer-like:hover .tweet-icon {
+    fill: rgb(224, 36, 94);
+}
+.icon-wrapper-outer-like:hover .icon-count {
+    color: rgb(224, 36, 94);
+}
+
+
+
+
+
+
+
+
