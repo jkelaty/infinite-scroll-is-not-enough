@@ -101,6 +101,7 @@ body {
 
 .tweet-icon {
     width: 1.25em;
+    height: 1.25em;
     user-select: none;
     fill: rgb(136, 153, 166);;
 }
