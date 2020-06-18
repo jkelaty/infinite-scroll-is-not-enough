@@ -1,10 +1,15 @@
 import React from "react"
 import queryString from 'query-string'
 import { PageProps, graphql } from "gatsby"
+import { MoonLoader } from "react-spinners"
 
 import Tweet from "../components/tweet"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+
+function getTweets(user) {
+  alert(user)
+}
 
 type Data = {
   site: {
@@ -16,22 +21,26 @@ type Data = {
 
 const Index = ({ data, location }: PageProps<Data>) => {
   const siteTitle = data.site.siteMetadata.title
-  var count = 10
 
+  if (location.search) {
+    getTweets(queryString.parse(location.search).user)
+  }
+
+  // temp stuff
+  const loadingTweets = true
+
+  var count = 10
   var tweets = []
 
   for (let i = 0; i < count; ++i) {
     tweets.push(<Tweet key={i} />)
   }
 
-  if (location.search) {
-    alert(queryString.parse(location.search).user)
-  }
-
   return (
     <Layout title={siteTitle}>
       <SEO title={siteTitle} />
       {tweets}
+      {loadingTweets ? <div className={`loading-tweets`}><MoonLoader size={30} color={`#1DA1F2`} /></div> : null}
     </Layout>
   )
 }
@@ -47,3 +56,13 @@ export const pageQuery = graphql`
     }
   }
 `
+
+
+
+// TODO:
+// infinite scroll tweet generation
+// like tweet animation + callback
+// share + callback
+
+// !!! prevent elastic scrolling on safari !!!
+

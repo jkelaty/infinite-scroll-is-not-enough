@@ -1,14 +1,14 @@
-import React from "react"
+import React, { useState } from "react"
 import NavBar from "./navbar"
 import "./layout.scss"
 
 const Layout = ({ title, children }) => {
-  var darkMode = false;
+  const [darkMode, toggleMode] = useState(true);
 
   return (
     <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
       <header>
-        <NavBar title={title}/>
+        <NavBar title={title} toggleDarkMode={() => toggleMode(!darkMode)} />
       </header>
 
       <main className={`tweets`}>
@@ -22,12 +22,3 @@ const Layout = ({ title, children }) => {
 }
 
 export default Layout
-
-// TODO:
-// dark mode
-// navbar search + logo
-// infinite scroll
-// like tweet animation + callback
-// share + callback
-
-// navbar: dark mode toggle, logo, info, and search bar

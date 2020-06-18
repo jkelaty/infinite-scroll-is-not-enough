@@ -1,33 +1,19 @@
 import React from "react"
-import Img from "gatsby-image"
 import Icon from "./icon"
-import { useStaticQuery, graphql } from "gatsby"
 import { Comments, Retweet, Like, Share } from "./icons"
-
+import DefaultProfileImage from "../../content/assets/default-profile-image.png"
 
 import "./tweets.scss"
 
 function likeTweet() {
-  alert('like')
+  alert('Like')
 }
 
 function shareTweet() {
-  alert('share')
+  alert('Share')
 }
 
 const Tweet = (props) => {
-  const data = useStaticQuery(graphql`
-    query BioQuery {
-      file: file(absolutePath: { regex: "/default-profile-image.png/" }) {
-        childImageSharp {
-          fixed(width: 50, height: 50) {
-            ...GatsbyImageSharpFixed
-          }
-        }
-      }
-    }
-  `)
-
   const defaultName   = `Name`
   const defaultHandle = `@username`
   const defaultDate   = `Jun 11`
@@ -35,7 +21,7 @@ const Tweet = (props) => {
 
   return (
     <div className={`tweet`}>
-      <Img fixed={data.file.childImageSharp.fixed} className={`tweet-profile-image`} />
+      <img className={`tweet-profile-image`} alt={`tweet-profile`} src={props.image || DefaultProfileImage} />
 
       <span className={`tweet-content`}>
 
