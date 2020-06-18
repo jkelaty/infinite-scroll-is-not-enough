@@ -1,23 +1,31 @@
 import React, { useState } from "react"
+import { Helmet } from "react-helmet"
 import NavBar from "./navbar"
+import Favicon from "../../static/favicon.ico"
 import "./layout.scss"
 
 const Layout = ({ title, children }) => {
   const [darkMode, toggleMode] = useState(true);
 
   return (
-    <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
-      <header>
-        <NavBar title={title} toggleDarkMode={() => toggleMode(!darkMode)} />
-      </header>
+    <>
+      <Helmet>
+        <link rel="icon" href={Favicon} />
+      </Helmet>
 
-      <main className={`tweets`}>
-        {children}
-      </main>
+      <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
+        <header>
+          <NavBar title={title} toggleDarkMode={() => toggleMode(!darkMode)} />
+        </header>
 
-      <footer>
-      </footer>
-    </div>
+        <main className={`tweets`}>
+          {children}
+        </main>
+
+        <footer>
+        </footer>
+      </div>
+    </>
   )
 }
 

@@ -63,6 +63,7 @@ export const pageQuery = graphql`
 // infinite scroll tweet generation
 // like tweet animation + callback
 // share + callback
+// intro/tutorial + store in browser storage
 
 // !!! prevent elastic scrolling on safari !!!
 
