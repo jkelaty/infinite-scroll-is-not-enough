@@ -4,7 +4,7 @@ from .extensions import mongo
 
 from .main import main
 
-def create_app(config_object='pymongo.settings'):
+def create_app(config_object='backend.settings'):
     app = Flask(__name__)
 
     app.config.from_object(config_object)
