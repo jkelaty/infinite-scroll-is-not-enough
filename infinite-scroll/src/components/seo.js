@@ -25,7 +25,6 @@ const SEO = ({ description, lang, meta, title }) => {
         lang,
       }}
       title={title}
-      titleTemplate={`%s | ${site.siteMetadata.title}`}
       meta={[
         {
           name: `description`,
@@ -42,6 +41,9 @@ const SEO = ({ description, lang, meta, title }) => {
         {
           property: `og:type`,
           content: `website`,
+        },{
+          property: `viewport`,
+          content: `width=device-width, initial-scale=1, maximum-scale=1`,
         }
       ].concat(meta)}
     />

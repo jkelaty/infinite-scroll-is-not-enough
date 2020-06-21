@@ -1,33 +1,32 @@
-import React from "react"
+import React, { useState } from "react"
+import { Helmet } from "react-helmet"
 import NavBar from "./navbar"
+import Favicon from "../../static/favicon.ico"
 import "./layout.scss"
 
 const Layout = ({ title, children }) => {
-  var darkMode = false;
+  const [darkMode, toggleMode] = useState(true);
 
   return (
-    <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
-      <header>
-        <NavBar title={title}/>
-      </header>
+    <>
+      <Helmet>
+        <link rel="icon" href={Favicon} />
+      </Helmet>
 
-      <main className={`tweets`}>
-        {children}
-      </main>
+      <div className={`infinite-scroll` + (darkMode ? ` ui-dark-mode` : ``)}>
+        <header>
+          <NavBar title={title} toggleDarkMode={() => toggleMode(!darkMode)} />
+        </header>
 
-      <footer>
-      </footer>
-    </div>
+        <main className={`tweets`}>
+          {children}
+        </main>
+
+        <footer>
+        </footer>
+      </div>
+    </>
   )
 }
 
 export default Layout
-
-// TODO:
-// dark mode
-// navbar search + logo
-// infinite scroll
-// like tweet animation + callback
-// share + callback
-
-// navbar: dark mode toggle, logo, info, and search bar

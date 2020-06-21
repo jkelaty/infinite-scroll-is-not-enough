@@ -1,24 +1,77 @@
 html, body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overscroll-behavior: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  background-color: rgb(0, 0, 0);
 }
 
 .infinite-scroll {
-    background: rgb(21, 32, 43);
+  background: rgb(21, 32, 43);
+  min-height: calc(100vh - 54px);
+  transition: 0.2s background-color;
 
-    &.ui-dark-mode {
-        background: rgb(0, 0, 0);
+  &.ui-dark-mode {
+    background: rgb(0, 0, 0);
 
-        .navbar {
-            background: rgb(0, 0, 0);
-        }
-
-        .tweet:hover {
-            background: rgb(21, 24, 28);
-        }
+    .navbar {
+      background: rgb(0, 0, 0);
+      color: rgb(217, 217, 217);
     }
+
+    .search-bar, .dark-mode-toggle {
+      background-color: rgb(32, 35, 39);
+    }
+
+    .search-icon {
+      fill: rgb(110, 118, 125);
+    }
+
+    input, .tweet {
+      color: rgb(217, 217, 217);
+    }
+
+    .tweet:hover {
+      background: rgb(21, 24, 28);
+    }
+
+    .navbar-logo {
+      filter: none;
+    }
+
+    .light-mode {
+      display: none;
+    }
+
+    .dark-mode {
+      display: inline;
+    }
+  }
+}
+
+.loading-tweets {
+  min-height: 100px;
+
+  &>div {
+    margin: 35px;
+    text-align: center;
+    display: inline-block;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(217, 217, 217);;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
