@@ -1,2 +1,0 @@
-FLASK_APP=pymongo
-FLASK_ENV=development
