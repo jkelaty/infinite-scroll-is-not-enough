@@ -1,5 +1,6 @@
 from datetime import datetime
 from bson.objectid import ObjectId
+import tweepy
 
 from flask import Blueprint, request, jsonify
 
