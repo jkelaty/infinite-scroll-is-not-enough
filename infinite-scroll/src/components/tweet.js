@@ -1,7 +1,8 @@
 import React from "react"
+import { CSSTransition } from "react-transition-group"
+
 import Icon from "./icon"
 import { Comments, Retweet, Like, Liked, Share } from "./icons"
-import { CSSTransition } from "react-transition-group"
 import DefaultProfileImage from "../../content/assets/default-profile-image.png"
 
 import "../styles/tweets.scss"
@@ -54,7 +55,7 @@ class Tweet extends React.Component {
             <div className={`modal-content small`}>
 
               {(typeof window !== `undefined`) ? 
-                window.location.protocol + "//" + window.location.host + "/" + "?tweet=" + this.tweet.id
+                window.location.protocol + "//" + window.location.host + "/tweet?id=" + this.tweet.id
               : null}
 
               <button className={`close-modal`} onClick={() => this.closeModal()}>{`Close`}</button>

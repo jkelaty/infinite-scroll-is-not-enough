@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Helmet } from "react-helmet"
+
 import Intro from "./intro"
 import NavBar from "./navbar"
 import Favicon from "../../static/favicon.ico"

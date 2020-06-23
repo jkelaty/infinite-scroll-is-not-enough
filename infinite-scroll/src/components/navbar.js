@@ -1,5 +1,6 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
+
 import { Search, Clear } from "./icons"
 import Logo from "../../content/assets/logo.png"
 
@@ -9,7 +10,7 @@ var inputRef = React.createRef();
 
 function onEnter(e) {
   if (e.key === 'Enter' && e.target.value !== '') {
-    navigate('/?user=' + e.target.value)
+    navigate('/tweets?user=' + e.target.value)
   }
   else if (e.key === 'Escape') {
     clearInput()

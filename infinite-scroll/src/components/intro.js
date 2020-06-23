@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { CSSTransition } from "react-transition-group"
+
 import { Comments, Retweet, Liked, Share } from "./icons"
 
 import "../styles/modal.scss"

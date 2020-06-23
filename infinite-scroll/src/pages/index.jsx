@@ -1,5 +1,4 @@
 import React from "react"
-import queryString from 'query-string'
 import { graphql } from "gatsby"
 import { MoonLoader } from "react-spinners"
 
@@ -14,60 +13,69 @@ class Index extends React.Component {
     this.siteTitle = props.data.site.siteMetadata.title
     this.loadingElement = <div className={`loading-tweets`}><MoonLoader size={30} color={`#1DA1F2`} /></div>
 
-    this.tweets = []
-    this.count = 10
-    this.user = null
+    this.state = this.getState(props)
+    this.fetchTweets()
 
-    for (let i = 0; i < this.count; ++i) {
-      this.tweets.push(<Tweet key={i} />)
-    }
-
-    // if (props.location.search) {
-    //   this.user = queryString.parse(props.location.search).user
-    // }
-
-    this.state = {
-      canLoadMore: true,
-      loadingTweets: false
-    }
-
+    this.getTweets      = this.fetchTweets.bind(this)
     this.scrollCallback = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', () => this.handleScroll())
+    if (typeof window !== `undefined`) {
+      window.addEventListener('scroll', () => this.handleScroll())
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll')
+    if (typeof window !== `undefined`) {
+      window.removeEventListener('scroll', () => this.handleScroll())
+    }
+  }
+
+  handleScroll() {
+    if (this.state.canLoadMore && ! this.state.loadingTweets) {
+      let maxPosition     = document.body.scrollHeight + 54 - 100
+      let currentPosition = window.pageYOffset + window.innerHeight
+    
+      if ( ! this.state.loadingTweets && currentPosition >= maxPosition ) {
+        this.setState({
+          loadingTweets: true
+        }, () => this.getTweets())
+      }
+    }
   }
 
   render() {
     return (
       <Layout title={this.siteTitle}>
         <SEO title={this.siteTitle} />
-        {this.tweets}
+        {this.state.tweets}
         {this.state.loadingTweets ? this.loadingElement : null}
       </Layout>
     )
   }
 
-  getTweets() {
-    //alert("Get Tweets")
+  getState(props) {
+    return {
+      tweets: [],
+      canLoadMore: true,
+      loadingTweets: true
+    }
   }
 
-  handleScroll() {
-    if (this.state.canLoadMore) {
-      let maxPosition     = document.body.scrollHeight + 54 - 100
-      let currentPosition = window.pageYOffset + window.innerHeight
-    
-      if ( ! this.state.loadingTweets && currentPosition >= maxPosition ) {
-        this.getTweets()
-        this.setState({
-          loadingTweets: true
-        })
-      }
+  fetchTweets() {
+    let tweets = []
+    for (let i = 0; i < 10; ++i) {
+      tweets.push(<Tweet key={i} />)
     }
+
+    let _this = this
+    setTimeout(function() {
+      _this.setState({
+        tweets: _this.state.tweets.concat(tweets),
+        loadingTweets: false
+      })
+    }, 3000)
   }
 }
 
@@ -85,9 +93,9 @@ export const pageQuery = graphql`
 
 
 // TODO:
-// home icon refreshed to home page
-// infinite scroll tweet generation
-// request tweets
+// wrap pages in layout (see tab)
+// css icons overflow fix-fix
 
+// request tweets
 // like/unlike tweet api calls
 // share api calls + appearance
