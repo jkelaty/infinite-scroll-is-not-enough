@@ -22,46 +22,20 @@ class Index extends React.Component {
       this.tweets.push(<Tweet key={i} />)
     }
 
-    if (props.location.search) {
-      this.user = queryString.parse(props.location.search).user
-    }
+    // if (props.location.search) {
+    //   this.user = queryString.parse(props.location.search).user
+    // }
 
     this.state = {
-      loadingTweets: false,
-      user: this.user
+      canLoadMore: true,
+      loadingTweets: false
     }
+
+    this.scrollCallback = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', () => this.handleScroll(this))
-  }
-
-  // Update to account for loading new tweets
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.location.search) {
-      let user = queryString.parse(nextProps.location.search).user
-      if (user !== this.state.user) {
-        return true
-      }
-    }
-    else if (this.state.user) {
-      return true
-    }
-    return false
-  }
-
-  // Update to account for loading new tweets
-  static getDerivedStateFromProps(props, state) {
-    if (props.location.search) {
-      let new_user = queryString.parse(props.location.search).user
-      if (new_user !== state.user) {
-        return {user: new_user}
-      }
-    }
-    else if (state.user) {
-      return {user: null}
-    }
-    return null
+    window.addEventListener('scroll', () => this.handleScroll())
   }
 
   componentWillUnmount() {
@@ -78,18 +52,21 @@ class Index extends React.Component {
     )
   }
 
-  getTweets(user) {
-    alert(user)
+  getTweets() {
+    //alert("Get Tweets")
   }
 
-  handleScroll(that) {
-    let maxPosition     = document.body.scrollHeight + 54 - 100
-    let currentPosition = window.pageYOffset + window.innerHeight
-  
-    if ( ! that.state.loadingTweets && currentPosition >= maxPosition ) {
-      that.setState({
-        loadingTweets: true
-      })
+  handleScroll() {
+    if (this.state.canLoadMore) {
+      let maxPosition     = document.body.scrollHeight + 54 - 100
+      let currentPosition = window.pageYOffset + window.innerHeight
+    
+      if ( ! this.state.loadingTweets && currentPosition >= maxPosition ) {
+        this.getTweets()
+        this.setState({
+          loadingTweets: true
+        })
+      }
     }
   }
 }
