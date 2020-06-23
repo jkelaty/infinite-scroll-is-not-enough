@@ -1,3 +1,7 @@
+@import "./CrossBrowser.scss";
+
+$like-animation: url('../../content/assets/like-animation.png');
+
 @media only screen and (max-width: 600px) {
   .tweets {
     border: none !important;
@@ -7,6 +11,7 @@
 .tweets {
   position: relative;
   max-width: 600px;
+  overflow: hidden;
   text-align: center;
   margin: auto;
   border-left: 1px solid rgb(56, 68, 77);
@@ -23,7 +28,7 @@
   border-bottom: 1px solid rgb(56, 68, 77);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
   cursor: pointer;
-  transition: 0.2s background-color;
+  @include transition(0.2s background-color);;
 
   &:hover {
     background: rgb(25, 39, 52);
@@ -81,13 +86,24 @@
 }
 
 .tweet-icons {
+  display: flex;
+  justify-content: space-between;
   margin-top: 10px;
+  width: 85%;
 }
 
 .icon-wrapper {
   display: inline-block;
-  width: 25%;
+  max-width: 1.25em;
+  min-width: 1.25em;
   height: 1.25em;
+}
+
+.icon-wrapper-outer {
+  display: inline-block;
+  position: relative;
+  min-height: 1.25em;
+  min-width: 1.25em;
 }
 
 .icon-wrapper-inner {
@@ -96,7 +112,33 @@
   position: absolute;
   padding: 7px;
   display: inline-flex;
-  transform: translate(-7px, -7px);
+  @include transform(translate(-7px, -7px));
+}
+
+.icon-wrapper-inner-liked:before {
+  content: "";
+  visibility: hidden;
+  position: absolute;
+  width: 1.25em;
+  height: 1.25em;
+  background-image: $like-animation;
+  background-size: 2500%;
+  background-position: left center;
+  background-repeat: no-repeat;
+  @include transform(scale(3));
+  @include animation(LikedTweet 0.8s steps(24));
+}
+
+@include keyframes(LikedTweet) {
+  0% {
+    background-position-x: 0px;
+    visibility: visible;
+  }
+  100% {
+    background-position-x: 100%;
+    visibility: visible;
+    animation-play-state: paused;
+  }
 }
 
 .tweet-icon {
@@ -107,15 +149,52 @@
 }
 
 .icon-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include transition(color 0.2s);
+}
+
+.icon-count-wrapper {
+  display: inline-block;
+  min-height: 1.25em;
+  width: 1000%;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: visible;
   font-size: 13px;
   color: rgb(136, 153, 166);
   margin-left: 27px;
   user-select: none;
   vertical-align: super;
+
+  .prev-count { top: -100%; }
+  &.appear, &.enter {
+    .prev-count { @include animation(MoveUp 0.5s ease-in-out); }
+    .curr-count { @include animation(MoveIn 0.5s ease-in-out); }
+  }
+
+  &.reverse {
+    .prev-count { top: 100%; }
+    &.appear, &.enter {
+      .prev-count { @include animation(MoveIn 0.5s ease-in-out reverse); }
+      .curr-count { @include animation(MoveUp 0.5s ease-in-out reverse); }
+    }
+  }
 }
 
-.icon-wrapper-inner, .tweet-icon, .icon-count {
-  transition: all 0.2s;
+@include keyframes(MoveUp) {
+  0%   { top: 0;     }
+  100% { top: -100%; }
+}
+
+@include keyframes(MoveIn) {
+  0%   { top: 100%; }
+  100% { top: 0;    }
+}
+
+.icon-wrapper-inner, .tweet-icon {
+  @include transition(all 0.2s);
 }
 
 /* Comments and Share Icons */
@@ -168,6 +247,26 @@
     color: rgb(224, 36, 94);
   }
 }
+
+.icon-wrapper-outer-liked:hover .icon-wrapper-inner-liked {
+  background: rgba(224, 36, 94, 0.1);
+}
+
+.icon-wrapper-liked .icon-count {
+  color: rgb(224, 36, 94);
+}
+
+.icon-liked {
+  fill: rgb(224, 36, 94);
+  @include animation(GrowLike 0.8s);
+}
+
+@include keyframes(GrowLike) {
+  0%, 30% { @include transform(scale(0));   }
+  80%     { @include transform(scale(1.1)); }
+  100%    { @include transform(scale(1));   }
+}
+
 
 
 

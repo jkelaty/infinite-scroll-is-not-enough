@@ -3,7 +3,7 @@ import { Link, navigate } from "gatsby"
 import { Search, Clear } from "./icons"
 import Logo from "../../content/assets/logo.png"
 
-import "./navbar.scss"
+import "../styles/navbar.scss"
 
 var inputRef = React.createRef();
 
