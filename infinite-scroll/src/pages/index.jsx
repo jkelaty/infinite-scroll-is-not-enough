@@ -1,20 +1,15 @@
 import React from "react"
-import { graphql } from "gatsby"
 import { MoonLoader } from "react-spinners"
 
 import Tweet from "../components/tweet"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
 
 class Index extends React.Component {
   constructor(props) {
     super(props)
     
-    this.siteTitle = props.data.site.siteMetadata.title
     this.loadingElement = <div className={`loading-tweets`}><MoonLoader size={30} color={`#1DA1F2`} /></div>
 
     this.state = this.getState(props)
-    this.fetchTweets()
 
     this.getTweets      = this.fetchTweets.bind(this)
     this.scrollCallback = this.handleScroll.bind(this)
@@ -24,6 +19,7 @@ class Index extends React.Component {
     if (typeof window !== `undefined`) {
       window.addEventListener('scroll', () => this.handleScroll())
     }
+    this.fetchTweets()
   }
 
   componentWillUnmount() {
@@ -33,7 +29,7 @@ class Index extends React.Component {
   }
 
   handleScroll() {
-    if (this.state.canLoadMore && ! this.state.loadingTweets) {
+    if (this.state.canLoadMore && ! this.state.loadingTweets && ! this.state.error) {
       let maxPosition     = document.body.scrollHeight + 54 - 100
       let currentPosition = window.pageYOffset + window.innerHeight
     
@@ -47,11 +43,10 @@ class Index extends React.Component {
 
   render() {
     return (
-      <Layout title={this.siteTitle}>
-        <SEO title={this.siteTitle} />
+      <>
         {this.state.tweets}
         {this.state.loadingTweets ? this.loadingElement : null}
-      </Layout>
+      </>
     )
   }
 
@@ -59,43 +54,49 @@ class Index extends React.Component {
     return {
       tweets: [],
       canLoadMore: true,
-      loadingTweets: true
+      loadingTweets: true,
+      error: false,
+      currentPage: 0
     }
   }
 
   fetchTweets() {
-    let tweets = []
-    for (let i = 0; i < 10; ++i) {
-      tweets.push(<Tweet key={i} />)
-    }
-
     let _this = this
-    setTimeout(function() {
-      _this.setState({
-        tweets: _this.state.tweets.concat(tweets),
-        loadingTweets: false
+
+    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/home/' + this.state.currentPage, { method: 'Get' })
+      .then(response => response.text())
+      .then((res) => {
+        let tweet_arr = JSON.parse(res)
+
+        if (tweet_arr.length === 0) {
+          _this.setState({
+            canLoadMore: false,
+            loadingTweets: false,
+            error: true 
+          })
+        }
+        
+        let _tweets = []
+
+        for (let i = 0; i < tweet_arr.length; ++i) {
+          _tweets.push(<Tweet tweet={tweet_arr[i]} key={tweet_arr[i].id} />)
+        }
+
+        _this.setState({
+          tweets: _this.state.tweets.concat(_tweets),
+          loadingTweets: false,
+          currentPage: this.state.currentPage + 1
+        })
       })
-    }, 3000)
+      .catch(error => {
+        _this.setState({
+          canLoadMore: false,
+          loadingTweets: false,
+          error: true 
+        })
+      })
   }
 }
 
 export default Index
 
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`
-
-
-// TODO:
-// wrap pages in layout (see tab)
-// css icons overflow fix-fix
-
-// request tweets
-// like/unlike tweet api calls
-// share api calls + appearance

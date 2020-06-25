@@ -57,6 +57,7 @@ $like-animation: url('../../content/assets/like-animation.png');
   line-height: 1.3125;
   font-size: 15px;
   font-weight: 400;
+  width: 100%;
 }
 
 .tweet-name-date {
@@ -157,12 +158,11 @@ $like-animation: url('../../content/assets/like-animation.png');
 
 .icon-count-wrapper {
   display: inline-block;
-  min-height: 1.25em;
-  width: 1000%;
   position: relative;
   overflow-y: hidden;
   overflow-x: visible;
   font-size: 13px;
+  min-height: 1.25em;
   color: rgb(136, 153, 166);
   margin-left: 27px;
   user-select: none;

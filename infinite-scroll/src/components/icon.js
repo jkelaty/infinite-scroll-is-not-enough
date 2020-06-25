@@ -5,7 +5,12 @@ const Icon = (props) => {
   let count = []
 
   if (props.curr && props.curr > 0) {
+    let curr_length = props.curr.toString().length
+
     if (props.prev) {
+      let prev_length   = props.prev.toString().length
+      let wrapper_width = (Math.max(curr_length, prev_length) * 8.13 + 5) + 'px'
+
       count = (
         <CSSTransition
           key={props.prev.toString() + props.curr.toString()}
@@ -13,7 +18,7 @@ const Icon = (props) => {
           appear={true}
           timeout={800}
         >
-          <span className={`icon-count-wrapper` + ((props.prev > props.curr) ? ` reverse` : ``)}>
+          <span className={`icon-count-wrapper` + ((props.prev > props.curr) ? ` reverse` : ``)} style={{width: wrapper_width}}>
               <span className={`icon-count curr-count`}>{props.curr}</span>
               <span className={`icon-count prev-count`}>{props.prev}</span>
           </span>
@@ -21,8 +26,10 @@ const Icon = (props) => {
       )
     }
     else {
+      let wrapper_width = (curr_length * 8.13 + 5) + 'px'
+
       count = (
-        <span className={`icon-count-wrapper`}>
+        <span className={`icon-count-wrapper`} style={{width: wrapper_width}}>
           <span className={`icon-count`}>{props.curr}</span>
         </span>
       )

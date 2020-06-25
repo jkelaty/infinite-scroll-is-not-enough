@@ -1,6 +1,7 @@
 import React from "react"
-import { CSSTransition } from "react-transition-group"
+import { navigate } from "gatsby"
 
+import ShareModal from "./share"
 import Icon from "./icon"
 import { Comments, Retweet, Like, Liked, Share } from "./icons"
 import DefaultProfileImage from "../../content/assets/default-profile-image.png"
@@ -16,62 +17,56 @@ class Tweet extends React.Component {
       id:     null,
       image:  DefaultProfileImage,
       name:   `Name`,
-      handle: `@username`,
+      handle: `username`,
       date:   `Jun 11`,
       tweet:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac ex non quam fermentum sagittis sit amet eu elit. Sed ut sapien neque. Sed tincidunt pulvinar cursus. Curabitur malesuada odio sem, ut blandit magna interdum vitae. Aenean semper, sem non condimentum pellentesque sed.`
     }
 
     this.tweet = props.tweet ? {
-      id:     props.tweet.id     || this.defaultTweet.id,
-      image:  props.tweet.image  || this.defaultTweet.image,
-      name:   props.tweet.name   || this.defaultTweet.name,
-      handle: props.tweet.handle || this.defaultTweet.handle,
-      date:   props.tweet.date   || this.defaultTweet.date,
-      tweet:  props.tweet.tweet  || this.defaultTweet.tweet
+      id:     props.tweet.id     || defaultTweet.id,
+      image:  props.tweet.image  || defaultTweet.image,
+      name:   props.tweet.name   || defaultTweet.name,
+      handle: props.tweet.handle || defaultTweet.handle,
+      date:   props.tweet.date   || defaultTweet.date,
+      tweet:  props.tweet.tweet  || defaultTweet.tweet
     } : defaultTweet
 
     this.commentsCount = this.randBetween(100, 1000)
     this.retweetsCount = this.randBetween(100, 1000)
     this.likeCount     = {
       previous: null,
-      current: this.randBetween(100, 1000)
+      current: props.tweet ? props.tweet.likes : null
     }
 
     this.state = {
       liked: false,
       showModal: false
     }
+
+    this.like   = this.likeTweet.bind(this)
+    this.unlike = this.unlikeTweet.bind(this)
+    this.share  = this.shareTweet.bind(this)
+    this.close  = this.closeModal.bind(this)
   }
 
   render() {
     return (
       <>
-        <CSSTransition
-          appear={true}
-          in={this.state.showModal}
-          timeout={100}>
-
-          <div className={`modal-background`}>
-            <div className={`modal-content small`}>
-
-              {(typeof window !== `undefined`) ? 
-                window.location.protocol + "//" + window.location.host + "/tweet?id=" + this.tweet.id
-              : null}
-
-              <button className={`close-modal`} onClick={() => this.closeModal()}>{`Close`}</button>
-
-            </div>
-          </div>
-        </CSSTransition>
-
         <div className={`tweet`}>
+
+          <ShareModal
+            key={this.tweet.id}
+            show={this.state.showModal}
+            tweet={this.tweet.id}
+            close={this.close}/>
+
           <img className={`tweet-profile-image`} alt={`tweet-profile`} src={this.tweet.image} />
     
           <span className={`tweet-content`}>
     
             <div className={`tweet-name-date`}>
-              <span className={`tweet-profile-name`}>{this.tweet.name}</span>
-              <span className={`tweet-profile-handle`}>{this.tweet.handle}</span>
+              <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name}</span>
+              <span className={`tweet-profile-handle`}>{'@' + this.tweet.handle}</span>
               <span className={`tweet-separator`}>{`·`}</span>
               <span className={`tweet-date`}>{this.tweet.date}</span>
             </div>
@@ -112,48 +107,95 @@ class Tweet extends React.Component {
             </div>
     
           </span>
+          
         </div>
       </>
     )
   }
 
+  generateUser() {
+    navigate('/tweets?user=' + this.tweet.handle)
+  }
+
   likeTweet() {
     if (this.tweet.id === null) {
-      // Register tweet -> Call API
+      this.registerTweet(this.like)
     }
     else {
-      // Call API
-    }
+      let _this = this
 
-    this.likeCount.previous = this.likeCount.current
-    this.likeCount.current++
-    this.setState({ liked: true })
+      fetch('https://infinite-scroll-is-not-enough.herokuapp.com/like/' + this.tweet.id, { method: 'Get' })
+        .then(response => response.text())
+        .then((res) => {
+          let likes = JSON.parse(res)
+
+          if (likes.length > 0) {
+            _this.likeCount.previous = _this.likeCount.current
+            _this.likeCount.current  = likes[0]['likes']
+            _this.setState({ liked: true })
+          }
+        })
+    }
   }
 
   unlikeTweet() {
     if (this.tweet.id === null) {
-      // Register tweet -> Call API
+      this.registerTweet(this.unlike)
     }
     else {
-      // Call API
-    }
+      let _this = this
 
-    this.likeCount.previous = this.likeCount.current
-    this.likeCount.current--
-    this.setState({ liked: false })
+      fetch('https://infinite-scroll-is-not-enough.herokuapp.com/unlike/' + this.tweet.id, { method: 'Get' })
+        .then(response => response.text())
+        .then((res) => {
+          let likes = JSON.parse(res)
+
+          if (likes.length > 0) {
+            _this.likeCount.previous = _this.likeCount.current
+            _this.likeCount.current  = likes[0]['likes']
+            _this.setState({ liked: false })
+          }
+        })
+    }
   }
   
   shareTweet() {
-    if (typeof document !== `undefined`) {
-      document.body.style.overflowY = 'hidden'
-    }
-
-    if (this.tweet.id === null && false) {
-      // Register tweet -> Set state
+    if (this.tweet.id === null) {
+      this.registerTweet(this.share)
     }
     else {
+      if (typeof document !== `undefined`) {
+        document.body.style.overflowY = 'hidden'
+      }
       this.setState({ showModal: true })
     }
+  }
+
+  registerTweet(callback) {
+    let _this = this
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        handle: this.tweet.handle,
+        date: this.tweet.date,
+        tweet: this.tweet.tweet
+      })
+    };
+  
+    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/register/', requestOptions)
+      .then(response => response.text())
+      .then((res) => {
+        let new_id = JSON.parse(res)
+
+        if (new_id.length > 0) {
+          _this.tweet.id = new_id[0]['id']
+          callback.call()
+        }
+      })
   }
 
   closeModal() {

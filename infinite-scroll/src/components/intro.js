@@ -5,12 +5,11 @@ import { Comments, Retweet, Liked, Share } from "./icons"
 
 import "../styles/modal.scss"
 
-const Intro = () => {
+const IntroModal = () => {
   const [showModal, closeModal] = useState(
     (typeof window !== `undefined`)
       ? (window.localStorage.getItem('intro') || 'show')
-      : 'show'
-  )
+      : 'show')
 
   useEffect(() => {
     if (typeof window !== `undefined`) {
@@ -66,4 +65,4 @@ const Intro = () => {
   )
 }
 
-export default Intro
+export default IntroModal

@@ -4,7 +4,6 @@
   display: none;
   position: fixed;
   justify-content: center;
-  align-items: center;
   top: 0;
   left: 0;
   z-index: 1000;
@@ -34,14 +33,18 @@
   height: 600px;
   width: 800px;
   max-width: 90vw;
-  max-height: 70vh;
+  max-height: 60vh;
   background-color: rgb(21, 32, 43);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
   border-radius: 30px;
   border: 1px solid rgb(56, 68, 77);
+  top: 40%;
+  cursor: default;
+  @include transform(translateY(-50%));
 
   &.small {
-    height: 300px;
+    justify-content: center;
+    height: 250px;
     width: 600px;
   }
 }
@@ -97,7 +100,7 @@
   user-select: none;
   min-height: 30px;
   width: 100px;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   border: none;
   user-select: none;
   border-radius: 30px;
@@ -106,7 +109,7 @@
   @include transition(background-color 0.3s);
 
   &:hover {
-    background-color: darkgrey;
+    background-color: lightgoldenrodyellow;
   }
 
   &:focus {
@@ -118,4 +121,81 @@
   text-align: left;
 }
 
+.share-link {
+  width: 400px;
+  max-width: calc(90% - 40px);
+  margin: 20px;
+
+  .share-input {
+    display: inline-block;
+    color: black !important;
+    font-family: monospace;
+    font-size: 12px;
+    height: 20px;
+    width: calc(100% - 65px);
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    vertical-align: top;
+    border: 2px solid grey;
+    border-right: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .clipboard {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: 2px solid grey;
+    border-left: 1px solid grey;
+    user-select: none;
+    cursor: pointer;
+    @include transition(background-color 0.1s);
+
+    .icon-clipboard, .icon-checkmark {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      @include transform(translate(-50%,-50%));
+    }
+
+    .icon-clipboard {
+      color: #6a737d;
+    }
+    
+    .icon-checkmark {
+      display: none;
+      color: green;
+    }
+
+    &.copied {
+      .icon-clipboard {
+        @include animation(Checkmark 0.2s ease-in-out reverse);
+        @include transform(translate(-50%,-50%) scale(0));
+      }
+      .icon-checkmark {
+        display: block;
+        @include animation(Checkmark 0.4s ease-in-out);
+      }
+    }
+
+    &:hover {
+      background-color: #f3f4f6;
+    }
+  }
+}
+
+@include keyframes(Checkmark) {
+  0%   { @include transform(translate(-50%,-50%) scale(0)); }
+  100% { @include transform(translate(-50%,-50%) scale(1)); }
+}
 

@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react"
+import { useStaticQuery, graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 
-import Intro from "./intro"
-import NavBar from "./navbar"
+import IntroModal from "../components/intro"
+import SEO from "../components/seo"
+import NavBar from "../components/navbar"
 import Favicon from "../../static/favicon.ico"
 
 import "../styles/layout.scss"
 
-const Layout = ({ title, children }) => {
+const Layout = ({ children }) => {
+  const siteTitle = useStaticQuery(graphql`
+    query HeaderQuery {
+      site {
+        siteMetadata {
+          title
+        }
+      }
+    }
+  `).site.siteMetadata.title
+
   const [darkMode, toggleMode] = useState(
     (typeof window !== `undefined`)
       ? (window.localStorage.getItem('ui-dark-mode') || 'false')
@@ -31,15 +43,13 @@ const Layout = ({ title, children }) => {
 
   return (
     <>
-      <Intro />
-
-      <Helmet>
-        <link rel="icon" href={Favicon} />
-      </Helmet>
+      <IntroModal />
+      <Helmet><link rel="icon" href={Favicon} /></Helmet>
+      <SEO title={siteTitle} />
 
       <div className={`infinite-scroll`}>
         <header>
-          <NavBar title={title} toggleDarkMode={() => toggleMode( ((darkMode === 'true') ? 'false' : 'true') )} />
+          <NavBar title={siteTitle} toggleDarkMode={() => toggleMode( ((darkMode === 'true') ? 'false' : 'true') )} />
         </header>
 
         <main className={`tweets`}>
