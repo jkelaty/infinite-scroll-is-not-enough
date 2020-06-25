@@ -18,7 +18,7 @@ const ShareModal = ({show, tweet, close}) => {
   let shareURL = ''
 
   if (typeof window !== 'undefined') {
-    shareURL = window.location.protocol + "//" + window.location.host + "/tweet?id=" + tweet
+    shareURL = "https://jkelaty.github.io/infinite-scroll-is-not-enough/tweet?id=" + tweet
   }
 
   return (
