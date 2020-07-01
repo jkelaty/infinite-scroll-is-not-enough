@@ -1,21 +1,16 @@
 from requests_oauthlib import OAuth1
 from random            import randrange
+from credentials       import API_KEY, API_SECRET
 
 import requests
 
 def getTwitterData(user):
-    API_KEY    = 'cabCJ8nMPq1STGLDP0UNyig9l'
-    API_SECRET = 'IzBe0RF0SmVsZwMrq6qmcndozkhfahO8t8wpKshPRz4SoWGnYK'
-    AUTH       = OAuth1(API_KEY, API_SECRET)
-
+    AUTH = OAuth1(API_KEY, API_SECRET)
     return requests.get('https://api.twitter.com/1.1/users/show.json?screen_name=' + user, auth=AUTH).json()
 
 
 def getPrompts(user):
-    API_KEY    = 'cabCJ8nMPq1STGLDP0UNyig9l'
-    API_SECRET = 'IzBe0RF0SmVsZwMrq6qmcndozkhfahO8t8wpKshPRz4SoWGnYK'
-    AUTH       = OAuth1(API_KEY, API_SECRET)
-
+    AUTH = OAuth1(API_KEY, API_SECRET)
     result = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' + user, auth=AUTH).json()
     tweets = list()
 
