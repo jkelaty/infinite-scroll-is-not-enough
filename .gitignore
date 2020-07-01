@@ -1,5 +1,6 @@
 infinite-scroll/node_modules/
 infinite-scroll/.cache/
+infinite-scroll/public/
 .DS_Store
 
 mongo/.env
