@@ -49,9 +49,7 @@ class GeneratedTweets extends Index {
 
         if (tweet_arr.length === 0) {
           _this.setState({
-            canLoadMore: false,
-            loadingTweets: false,
-            error: true 
+            loadingTweets: false
           })
         }
         

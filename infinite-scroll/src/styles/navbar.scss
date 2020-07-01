@@ -9,6 +9,7 @@
   background: rgb(21, 32, 43);
   border-bottom: 1px solid rgb(56, 68, 77);
   color: rgb(255, 255, 255);
+  user-select: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
   @include transition(0.2s background-color);
 
@@ -20,10 +21,13 @@
 }
 
 .navbar-inner {
+  display: flex;
+  position: relative;
   max-width: 600px;
   height: 100%;
   margin: auto;
   text-align: center;
+  justify-content: space-between;
 }
 
 .search-bar {
@@ -123,32 +127,70 @@
   filter: contrast(0) brightness(0) invert(54%) sepia(12%) saturate(6458%) hue-rotate(175deg) brightness(97%) contrast(96%);
   @include transition(0.2s all);
 
-  &:hover {
+  /*&:hover {
     @include animation(1s LogoTilt);
-  }
+  }*/
 }
 
-@include keyframes(LogoTilt) {
+/*@include keyframes(LogoTilt) {
   0%   { @include transform(scale(1.1) rotate(0deg));   }
   25%  { @include transform(scale(1.1) rotate(-10deg)); }
   75%  { @include transform(scale(1.1) rotate(10deg));  }
   100% { @include transform(scale(1)   rotate(0deg));   }
-}
-
-.dark-mode {
-  display: none;
-}
+}*/
 
 .dark-mode-toggle {
-  height: 30px;
-  background-color: rgb(255, 255, 255);
-  float: right;
-  margin-right: 15px;
-  margin-top: 12px;
-  user-select: none;
-  cursor: pointer;
+  display: flex;
+  margin-right: 5px;
+}
 
-  &:focus {
-    outline: none;
+.light-toggle {
+	background-color: rgb(82, 82, 82);
+	border-radius: 0.75em;
+	box-shadow: 0.125em 0.125em 0 0.125em rgba(0,0,0,0.3) inset;
+	color: #fdea7b !important;
+	display: inline-flex;
+	align-items: center;
+	margin: auto;
+	padding: 0.15em;
+	width: 2.7em;
+	font-size: 1.6em;
+  line-height: 1.5;
+  @include transition(0.2s ease-out);
+  
+  &:before, &:after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  &:before {
+    background-color: currentColor;
+    border-radius: 50%;
+    width: 1.2em;
+    height: 1.2em;
+    z-index: 1;
+    @include transition(0.2s ease-out);
+  }
+
+  &:after {
+    background:
+      linear-gradient(transparent 50%, rgba(0,0,0,0.15) 0) 0 50% / 50% 100%,
+      repeating-linear-gradient(90deg,#bbb 0,#bbb,#bbb 20%,#999 20%,#999 40%) 0 50% / 50% 100%,
+      radial-gradient(circle at 50% 50%,#888 25%, transparent 26%);
+    background-repeat: no-repeat;
+    border: 0.25em solid transparent;
+    border-left: 0.4em solid #d8d8d8;
+    border-right: 0 solid transparent;
+    transform-origin: 25% 50%;
+    width: 1.2em;
+    height: 1em;
+    @include transform(translateX(-22.5%));
+    @include transition(0.2s ease-out);
   }
 }
+
+
+

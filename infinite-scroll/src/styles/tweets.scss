@@ -45,6 +45,7 @@ $like-animation: url('../../content/assets/like-animation.png');
   min-height: 50px;
   max-width: 50px;
   min-width: 50px;
+  -webkit-user-drag: none;
 
   picture img {
     height: 50px !important;

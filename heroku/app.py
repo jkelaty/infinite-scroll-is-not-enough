@@ -192,7 +192,7 @@ def generate_tweets(user):
         tweet['id']     = None
         tweet['likes']  = None
         tweet['handle'] = user
-        tweet['date']   = date.today().isoformat()
+        tweet['date']   = date.today().strftime('%b%e')
         tweet['tweet']  = generateTweet(prompt)
 
         if tweet['tweet'] == '':

@@ -41,10 +41,9 @@ const NavBar = ({title, toggleDarkMode}) => {
             <a className={`clear-icon-wrapper`} onClick={() => clearInput()}>{Clear}</a>
           </div>
 
-          <button className={`dark-mode-toggle`} onClick={toggleDarkMode}>
-            <span role={`img`} className={`light-mode`} aria-label={`sun-emoji`}>☀️</span>
-            <span role={`img`} className={`dark-mode`} aria-label={`moon-emoji`}>🌙</span>
-          </button>
+          <div className={`dark-mode-toggle`}>
+            <span className={`light-toggle`} onClick={toggleDarkMode} />
+          </div>
 
         </div>
       </div>

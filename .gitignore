@@ -4,4 +4,3 @@ infinite-scroll/.cache/
 
 mongo/.env
 mongo/.flaskenv
-heroku/

@@ -20,7 +20,7 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .search-bar, .dark-mode-toggle {
+    .search-bar {
       background-color: rgb(32, 35, 39);
     }
 
@@ -28,7 +28,7 @@ html {
       fill: rgb(110, 118, 125);
     }
 
-    input, .tweet {
+    input, .tweet, .load-tweets>svg {
       color: rgb(217, 217, 217);
     }
 
@@ -40,12 +40,12 @@ html {
       filter: none;
     }
 
-    .light-mode {
-      display: none;
+    .light-toggle:before {
+      background-color: #d7d7d7;
+      @include transform(translateX(125%));
     }
-
-    .dark-mode {
-      display: inline;
+    .light-toggle:after {
+      @include transform(translateX(-2.5%) rotateY(180deg));
     }
   }
 }
@@ -61,6 +61,27 @@ html {
     margin: 35px;
     text-align: center;
     display: inline-block;
+  }
+}
+
+.load-tweets {
+  position: relative;
+  min-height: 100px;
+
+  &>svg {
+    position: absolute;
+    color: rgb(255, 255, 255);
+    height: 30px !important;
+    width: auto !important;
+    top: 50%;
+    left: 50%;
+    cursor: pointer;
+    @include transform(translate(-50%, -50%));
+    @include transition(all 0.3s);
+
+    &:hover {
+      @include transform(translate(-50%, -50%) rotate(270deg));
+    }
   }
 }
 

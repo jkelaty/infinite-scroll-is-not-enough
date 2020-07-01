@@ -1,5 +1,7 @@
 import React from "react"
 import { MoonLoader } from "react-spinners"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faRedoAlt } from "@fortawesome/free-solid-svg-icons"
 
 import Tweet from "../components/tweet"
 
@@ -8,6 +10,7 @@ class Index extends React.Component {
     super(props)
     
     this.loadingElement = <div className={`loading-tweets`}><MoonLoader size={30} color={`#1DA1F2`} /></div>
+    this.loadMore       = <div className={`load-tweets`} onClick={() => this.fetchTweetsAndSetState()}><FontAwesomeIcon icon={faRedoAlt} /></div>
 
     this.state = this.getState(props)
 
@@ -34,18 +37,22 @@ class Index extends React.Component {
       let currentPosition = window.pageYOffset + window.innerHeight
     
       if ( ! this.state.loadingTweets && currentPosition >= maxPosition ) {
-        this.setState({
-          loadingTweets: true
-        }, () => this.getTweets())
+        this.fetchTweetsAndSetState()
       }
     }
+  }
+
+  fetchTweetsAndSetState() {
+    this.setState({
+      loadingTweets: true
+    }, () => this.getTweets())
   }
 
   render() {
     return (
       <>
         {this.state.tweets}
-        {this.state.loadingTweets ? this.loadingElement : null}
+        {this.state.loadingTweets ? this.loadingElement : (this.state.canLoadMore ? this.loadMore : null)}
       </>
     )
   }
