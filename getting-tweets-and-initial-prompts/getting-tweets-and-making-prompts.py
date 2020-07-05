@@ -90,7 +90,7 @@ def interact_model(
                     print(text)
                     text=text+newline
                     testcsv_writer.writerow([text])    
-                    #testcsv_writer.writerow(["\n"])     
+            #        testcsv_writer.writerow(["\n"])     
             #         print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
             print("=" * 80)
 
@@ -98,13 +98,19 @@ c=twint.Config()
 c.Username="gamerpres2020"
 gp=open("gamerpres.csv","w")
 c.Store_object=True
-c.Limit=15
+#c.Limit=15
 c.Store_csv=True
 c.Output="gamerpres.csv"
 c.Hide_output=True
 twint.run.Search(c)
 Myfile=open('gamerpres.txt','w')
 first=True
+
+totalrows=0
+semirows=0
+previous1=""
+previous2=""
+words=0
 with open("gamerpres.csv") as csv_file:
     csv_reader=csv.reader(csv_file,delimiter=",")
     with open("test.csv",'w') as testcsv:
@@ -112,15 +118,23 @@ with open("gamerpres.csv") as csv_file:
         for row in csv_reader:
             n=Myfile.write(row[10])
             n=Myfile.write(" ")
-            n=Myfile.write("<|endoftext|>")
-            n=Myfile.write(" ")
-            interact_model(length=140, prompt=row[10])
+            totalrows=totalrows+1
+            if (totalrows%2==0):
+                combined=row[10]+previous1+previous2
+            #    interact_model(length=140,prompt=combined)
+            elif (totalrows%2==1):
+                previous1=row[10]
+            elif (totalrows%3):
+                previous2=row[10]
+            for word in row:
+                words=words+1
+            if (words>=1024):
+                n=Myfile.write("<|endoftext|>")
+                words=0
+            n=Myfile.write(" ") 
     Myfile.close()
-    
 
-
-
-os.system("python3 src/encode.py gamerpres.txt gamerpres.npz")
+os.system("python3 encode.py gamerpres.txt gamerpres.npz")
 #call(["python3","src/encode.py"])
 
 
