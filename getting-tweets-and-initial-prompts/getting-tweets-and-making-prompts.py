@@ -121,7 +121,7 @@ with open("gamerpres.csv") as csv_file:
             totalrows=totalrows+1
             if (totalrows%2==0):
                 combined=row[10]+previous1+previous2
-            #    interact_model(length=140,prompt=combined)
+                interact_model(length=140,prompt=combined)
             elif (totalrows%2==1):
                 previous1=row[10]
             elif (totalrows%3):
