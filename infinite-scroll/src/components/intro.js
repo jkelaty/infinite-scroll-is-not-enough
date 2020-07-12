@@ -6,10 +6,12 @@ import { Comments, Retweet, Liked, Share } from "./icons"
 import "../styles/modal.scss"
 
 const IntroModal = () => {
-  const [showModal, closeModal] = useState(
-    (typeof window !== `undefined`)
-      ? (window.localStorage.getItem('intro') || 'show')
-      : 'show')
+  // const [showModal, closeModal] = useState(
+  //   (typeof window !== `undefined`)
+  //     ? (window.localStorage.getItem('intro') || 'show')
+  //     : 'show')
+
+  const [showModal, closeModal] = useState('show')
 
   useEffect(() => {
     if (typeof window !== `undefined`) {
@@ -34,6 +36,7 @@ const IntroModal = () => {
             <div className={`intro-body`}>
               <p>{`Contributors: Jonathan, Xuejin, Benjamin, Ka Ming`}</p>
               <p>{`Check out our GitHub repo `}<a href="https://github.com/jkelaty/infinite-scroll-is-not-enough">{`here!`}</a></p>
+              {/* <p className={`warn`}>{`Tweet generation has been disabled at this time.`}</p> */}
               <p className={`left`}>{`In these uncertain times, many of us have turned to social media, especially Twitter, to fill our lives with entertainment while a pandamic sends ripples of unease to many people.`}</p>
               <p className={`left`}>{`Unfortunately, a person can only write so many tweets, and if you were to scroll through a individual's twitter feed long enough, reaching the end is inevitable.`}</p>
               <p className={`left`}>{`If you have found yourself in such a predicament, rejoice! You have stumbled upon the solution to all your problems! 'Infinite Scroll Is Not Enough' lets you generate tweets using an advanced Neural Language Model AI based on your favorite twitter user's tweet history.`}</p>

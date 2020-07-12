@@ -12,6 +12,7 @@ html {
   background-color: rgb(21, 32, 43);
   @include transition(0.2s background-color);
 
+  // Dark mode override
   &.ui-dark-mode {
     background: rgb(0, 0, 0);
 
@@ -85,6 +86,8 @@ html {
   }
 }
 
+
+// Scrollbar styling
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -100,3 +103,5 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+

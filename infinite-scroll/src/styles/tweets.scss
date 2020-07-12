@@ -1,7 +1,9 @@
 @import "./CrossBrowser.scss";
 
+// Image sprite for like animation
 $like-animation: url('../../content/assets/like-animation.png');
 
+// Remove side borders after 600px screen width breakpoint
 @media only screen and (max-width: 600px) {
   .tweets {
     border: none !important;
