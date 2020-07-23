@@ -16,15 +16,13 @@ class SingleTweet extends Index {
   }
 
   fetchTweets() {
-    let _this = this;
-
     fetch('https://infinite-scroll-is-not-enough.herokuapp.com/tweet/' + this.state.id, { method: 'Get' })
       .then(response => response.text())
       .then((res) => {
         let tweet_arr = JSON.parse(res)
 
         if (tweet_arr.length === 0) {
-          _this.setState({
+          this.setState({
             canLoadMore: false,
             loadingTweets: false,
             error: true 
@@ -33,14 +31,14 @@ class SingleTweet extends Index {
 
         let _tweet = <Tweet tweet={tweet_arr[0]} key={tweet_arr[0].id} />
 
-        _this.setState({
+        this.setState({
           tweets: _tweet,
           canLoadMore: false,
           loadingTweets: false
         })
       })
       .catch(error => {
-        _this.setState({
+        this.setState({
           canLoadMore: false,
           loadingTweets: false,
           error: true 

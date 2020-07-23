@@ -25,11 +25,15 @@ html {
       background-color: rgb(32, 35, 39);
     }
 
+    .tweet-profile-separator {
+      background-color: rgb(47, 51, 54);
+    }
+
     .search-icon {
       fill: rgb(110, 118, 125);
     }
 
-    input, .tweet, .load-tweets>svg {
+    input, .tweet, .tweet-reply, .load-tweets>svg {
       color: rgb(217, 217, 217);
     }
 

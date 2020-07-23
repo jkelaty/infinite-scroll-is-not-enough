@@ -1,10 +1,13 @@
 import React from "react"
 import { navigate } from "gatsby"
+import AnimateHeight from "react-animate-height"
 
+import Reply from "./reply"
 import ShareModal from "./share"
 import Icon from "./icon"
 import { Comments, Retweet, Like, Liked, Share } from "./icons"
 import DefaultProfileImage from "../../content/assets/default-profile-image.png"
+import Robot from "../../content/assets/robot.png"
 
 import "../styles/tweets.scss"
 import "../styles/modal.scss"
@@ -22,6 +25,17 @@ class Tweet extends React.Component {
       tweet:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac ex non quam fermentum sagittis sit amet eu elit. Sed ut sapien neque. Sed tincidunt pulvinar cursus. Curabitur malesuada odio sem, ut blandit magna interdum vitae. Aenean semper, sem non condimentum pellentesque sed.`
     }
 
+    const defaultReply = {
+      id:        defaultTweet.id,
+      image:     defaultTweet.image,
+      name:      defaultTweet.name,
+      handle:    defaultTweet.handle,
+      date:      defaultTweet.date,
+      tweet:     defaultTweet.tweet,
+      retweets:  null,
+      likes:     null
+    }
+
     this.tweet = props.tweet ? {
       id:     props.tweet.id     || defaultTweet.id,
       image:  props.tweet.image  || defaultTweet.image,
@@ -30,6 +44,17 @@ class Tweet extends React.Component {
       date:   props.tweet.date   || defaultTweet.date,
       tweet:  props.tweet.tweet  || defaultTweet.tweet
     } : defaultTweet
+
+    this.reply = (props.tweet && props.tweet.reply) ? {
+      id:       props.tweet.reply.id       || defaultReply.id,
+      image:    props.tweet.reply.image    || defaultReply.image,
+      name:     props.tweet.reply.name     || defaultReply.name,
+      handle:   props.tweet.reply.handle   || defaultReply.handle,
+      date:     props.tweet.reply.date     || defaultReply.date,
+      tweet:    props.tweet.reply.tweet    || defaultReply.tweet,
+      retweets: props.tweet.reply.retweets || defaultReply.retweets,
+      likes:    props.tweet.reply.likes    || defaultReply.likes
+    } : defaultReply
 
     this.commentsCount = this.randBetween(100, 1000)
     this.retweetsCount = this.randBetween(100, 1000)
@@ -40,7 +65,8 @@ class Tweet extends React.Component {
 
     this.state = {
       liked: false,
-      showModal: false
+      showReply: false,
+      showShareModal: false
     }
 
     this.like   = this.likeTweet.bind(this)
@@ -56,17 +82,21 @@ class Tweet extends React.Component {
 
           <ShareModal
             key={this.tweet.id}
-            show={this.state.showModal}
+            show={this.state.showShareModal}
             tweet={this.tweet.id}
             close={this.close}/>
 
-          <img className={`tweet-profile-image`} alt={`tweet-profile`} src={this.tweet.image} />
-    
+          <span className={`tweet-profile-wrapper`}>
+            <img className={`tweet-profile-image-overlay`} onClick={() => this.generateUser()} alt={`tweet-profile-overlay`} src={Robot} />
+            <img className={`tweet-profile-image generated`} onClick={() => this.generateUser()} alt={`tweet-profile`} src={this.tweet.image} />
+            <div className={`tweet-profile-separator` + (this.state.showReply ? ` expanded` : ``)} />
+          </span>
+
           <span className={`tweet-content`}>
     
             <div className={`tweet-name-date`}>
-              <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name}</span>
-              <span className={`tweet-profile-handle`}>{'@' + this.tweet.handle}</span>
+              <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name + ` GPT-2`}</span>
+              <span className={`tweet-profile-handle`} onClick={() => this.generateUser()}>{`@` + this.tweet.handle + `_GPT-2`}</span>
               <span className={`tweet-separator`}>{`·`}</span>
               <span className={`tweet-date`}>{this.tweet.date}</span>
             </div>
@@ -77,7 +107,8 @@ class Tweet extends React.Component {
               <Icon
                 icon={Comments}
                 type={`comments`}
-                curr={this.commentsCount}/>
+                curr={this.commentsCount}
+                callback={() => this.toggleReply()}/>
 
               <Icon
                 icon={Retweet}
@@ -107,6 +138,14 @@ class Tweet extends React.Component {
             </div>
     
           </span>
+
+          <AnimateHeight
+            duration={200}
+            height={this.state.showReply ? `auto` : 0}>
+
+            <Reply tweet={this.reply} />
+
+          </AnimateHeight>
           
         </div>
       </>
@@ -117,22 +156,24 @@ class Tweet extends React.Component {
     navigate('/tweets?user=' + this.tweet.handle)
   }
 
+  toggleReply() {
+    this.setState({ showReply: ! this.state.showReply })
+  }
+
   likeTweet() {
     if (this.tweet.id === null) {
       this.registerTweet(this.like)
     }
     else {
-      let _this = this
-
       fetch('https://infinite-scroll-is-not-enough.herokuapp.com/like/' + this.tweet.id, { method: 'Get' })
         .then(response => response.text())
         .then((res) => {
           let likes = JSON.parse(res)
 
           if (likes.length > 0) {
-            _this.likeCount.previous = _this.likeCount.current
-            _this.likeCount.current  = likes[0]['likes']
-            _this.setState({ liked: true })
+            this.likeCount.previous = this.likeCount.current
+            this.likeCount.current  = likes[0]['likes']
+            this.setState({ liked: true })
           }
         })
     }
@@ -143,17 +184,15 @@ class Tweet extends React.Component {
       this.registerTweet(this.unlike)
     }
     else {
-      let _this = this
-
       fetch('https://infinite-scroll-is-not-enough.herokuapp.com/unlike/' + this.tweet.id, { method: 'Get' })
         .then(response => response.text())
         .then((res) => {
           let likes = JSON.parse(res)
 
           if (likes.length > 0) {
-            _this.likeCount.previous = _this.likeCount.current
-            _this.likeCount.current  = likes[0]['likes']
-            _this.setState({ liked: false })
+            this.likeCount.previous = this.likeCount.current
+            this.likeCount.current  = likes[0]['likes']
+            this.setState({ liked: false })
           }
         })
     }
@@ -167,13 +206,11 @@ class Tweet extends React.Component {
       if (typeof document !== `undefined`) {
         document.body.style.overflowY = 'hidden'
       }
-      this.setState({ showModal: true })
+      this.setState({ showShareModal: true })
     }
   }
 
   registerTweet(callback) {
-    let _this = this
-
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -182,7 +219,8 @@ class Tweet extends React.Component {
       body: JSON.stringify({
         handle: this.tweet.handle,
         date: this.tweet.date,
-        tweet: this.tweet.tweet
+        tweet: this.tweet.tweet,
+        id: this.reply.id
       })
     };
   
@@ -192,7 +230,7 @@ class Tweet extends React.Component {
         let new_id = JSON.parse(res)
 
         if (new_id.length > 0) {
-          _this.tweet.id = new_id[0]['id']
+          this.tweet.id = new_id[0]['id']
           callback.call()
         }
       })
@@ -202,7 +240,7 @@ class Tweet extends React.Component {
     if (typeof document !== `undefined`) {
       document.body.style.overflowY = 'visible'
     }
-    this.setState({ showModal: false })
+    this.setState({ showShareModal: false })
   }
 
   randBetween(low, high) {

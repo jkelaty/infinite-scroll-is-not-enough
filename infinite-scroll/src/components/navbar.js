@@ -22,7 +22,7 @@ function clearInput() {
 }
 
 const NavBar = ({title, toggleDarkMode}) => {
-  const placeHolderText = `Generate Tweets for @user`
+  const placeHolderText = `Generate tweets for @user`
 
   return (
     <>

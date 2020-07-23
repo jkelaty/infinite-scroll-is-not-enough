@@ -4,6 +4,7 @@ import queryString from 'query-string'
 import Index from "./index.jsx"
 import Tweet from "../components/tweet"
 
+// Modified for demo
 class GeneratedTweets extends Index {
   getState(props) {
     return {
@@ -11,8 +12,8 @@ class GeneratedTweets extends Index {
       canLoadMore: true,
       loadingTweets: true,
       error: false,
-      user: queryString.parse(props.location.search).user,
-      count: 0
+      currentPage: 0,
+      user: queryString.parse(props.location.search).user
     }
   }
 
@@ -25,8 +26,8 @@ class GeneratedTweets extends Index {
         canLoadMore: true,
         loadingTweets: true,
         error: false,
-        user: new_user,
-        count: 0
+        currentPage: 0,
+        user: new_user
       }
     }
 
@@ -34,13 +35,13 @@ class GeneratedTweets extends Index {
   }
 
   componentDidUpdate() {
-    if (this.state.canLoadMore && this.state.count === 0) {
+    if (this.state.canLoadMore && this.state.currentPage === 0) {
       this.fetchTweets()
     }
   }
 
   fetchTweets() {
-    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/generate/' + this.state.user, { method: 'Get' })
+    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/generate/' + this.state.user + '/' + this.state.currentPage, { method: 'Get' })
       .then(response => response.text())
       .then((res) => {
         let tweet_arr = JSON.parse(res)
@@ -56,13 +57,13 @@ class GeneratedTweets extends Index {
         let _tweets = []
 
         for (let i = 0; i < tweet_arr.length; ++i) {
-          _tweets.push(<Tweet tweet={tweet_arr[i]} key={i + this.state.count} />)
+          _tweets.push(<Tweet tweet={tweet_arr[i]} key={tweet_arr[i].id} />)
         }
 
         this.setState({
           tweets: this.state.tweets.concat(_tweets),
           loadingTweets: false,
-          count: this.state.count + tweet_arr.length
+          currentPage: this.state.currentPage + 1
         })
       })
       .catch(error => {

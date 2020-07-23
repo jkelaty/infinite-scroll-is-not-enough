@@ -22,18 +22,45 @@ $like-animation: url('../../content/assets/like-animation.png');
   min-height: calc(100vh - 54px);
 }
 
-.tweet {
+.tweet, .tweet-reply {
+  flex-wrap: wrap;
   display: flex;
   text-align: left;
   color: rgb(255, 255, 255);
-  padding: 10px 15px;
-  border-bottom: 1px solid rgb(56, 68, 77);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
   cursor: pointer;
-  @include transition(0.2s background-color);;
+  @include transition(0.2s background-color);
+}
+
+.tweet {
+  padding: 10px 15px;
+  border-bottom: 1px solid rgb(56, 68, 77);
 
   &:hover {
     background: rgb(25, 39, 52);
+  }
+}
+
+.tweet-reply {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.tweet-profile-wrapper {
+  position: relative;
+}
+
+.tweet-profile-separator {
+  position: absolute;
+  width: 2px;
+  height: 0;
+  left: 24px;
+  top: 55px;
+  background-color: rgb(61, 84, 102);
+  @include transition(0.2s background-color, 0.2s height);
+
+  &.expanded {
+    height: calc(100% - 40px);
   }
 }
 
@@ -49,18 +76,22 @@ $like-animation: url('../../content/assets/like-animation.png');
   min-width: 50px;
   -webkit-user-drag: none;
 
-  picture img {
-    height: 50px !important;
-    width: 50px !important;
-    position: static !important;
+  &.generated {
+    opacity: 0.3;
   }
 }
 
+.tweet-profile-image-overlay {
+  position: absolute;
+  max-height: 50px;
+  left: 1.6875px; // calc((50px - 373px * (50 / 400)) / 2), where intrinsic length x height = 373 x 400
+}
+
 .tweet-content {
+  width: calc(100% - 60px);
   line-height: 1.3125;
   font-size: 15px;
   font-weight: 400;
-  width: 100%;
 }
 
 .tweet-name-date {

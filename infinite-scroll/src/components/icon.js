@@ -16,12 +16,13 @@ const Icon = (props) => {
           key={props.prev.toString() + props.curr.toString()}
           in={true}
           appear={true}
-          timeout={800}
-        >
+          timeout={800}>
+
           <span className={`icon-count-wrapper` + ((props.prev > props.curr) ? ` reverse` : ``)} style={{width: wrapper_width}}>
               <span className={`icon-count curr-count`}>{props.curr}</span>
               <span className={`icon-count prev-count`}>{props.prev}</span>
           </span>
+          
         </CSSTransition>
       )
     }

@@ -1,19 +1,27 @@
-from requests_oauthlib import OAuth1
 from random            import randrange
+from datetime          import datetime
+from requests_oauthlib import OAuth1
 from credentials       import TWITTER_CREDENTIALS, GPT_2_CREDENTIALS
 
 import requests
 
+
 # Retrives user data from twitter API
-def getTwitterData(user):
+def getUserData(user):
     AUTH = OAuth1(TWITTER_CREDENTIALS['API_KEY'], TWITTER_CREDENTIALS['API_SECRET'])
-    return requests.get('https://api.twitter.com/1.1/users/show.json?screen_name=' + user, auth=AUTH).json()
+    return requests.get('https://api.twitter.com/1.1/users/show.json?tweet_mode=extended&screen_name=' + user, auth=AUTH).json()
+
+
+# Retreives tweet data
+def getTweetData(tweet_id):
+    AUTH = OAuth1(TWITTER_CREDENTIALS['API_KEY'], TWITTER_CREDENTIALS['API_SECRET'])
+    return requests.get('https://api.twitter.com/1.1/statuses/show.json?tweet_mode=extended&id=' + tweet_id, auth=AUTH).json()
 
 
 # Retrieves some numbers of tweets from a user's timeline
 def getPrompts(user):
     AUTH = OAuth1(TWITTER_CREDENTIALS['API_KEY'], TWITTER_CREDENTIALS['API_SECRET'])
-    result = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=' + user + '&exclude_replies=1&include_rts=0', auth=AUTH).json()
+    result = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&screen_name=' + user + '&exclude_replies=1&include_rts=0', auth=AUTH).json()
     tweets = list()
 
     # Error handling (invalid user, API error, etc..) or no tweets on timeline
@@ -23,7 +31,18 @@ def getPrompts(user):
     # Changed to 1 because tweet generation can take up to 30
     # seconds, at which point Heroku breaks the connection
     for _ in range(1):
-        tweets.append(result[randrange(len(result))]['text']) # Selects random tweet from list and appends to our list of prompts
+        index = randrange(len(result))
+        new_text = list(result[index]['full_text'])
+        
+        # Remove special entities in text (URLs, mentions, hashtags, symbols)
+        # TODO: Maybe reconsider to only remove URLs?
+        for entity in result[index]['entities']:
+            for entry in result[index]['entities'][entity]:
+                for i in range(int(entry['indices'][0]), int(entry['indices'][1])):
+                   new_text[i] = '\0'
+        
+        result[index]['full_text'] = ''.join(new_text).replace('\0', '')
+        tweets.append(result[index]) # Selects random tweet from list and appends to our list of prompts
 
     return tweets
 
