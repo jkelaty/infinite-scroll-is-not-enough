@@ -36,11 +36,11 @@ const Layout = ({ children }) => {
       <Helmet><link rel="icon" href={Favicon} /></Helmet>
       <SEO title={siteTitle} />
 
-      <Modal showModal={showModal} toggleModal={() => toggleModal( ! showModal )} />
+      <Modal showModal={showModal} closeModal={() => toggleModal(false)} />
 
       <div className={`infinite-scroll`}>
         <header>
-          <NavBar title={siteTitle} toggleModal={() => toggleModal( ! showModal )} />
+          <NavBar openModal={() => toggleModal(true)} />
         </header>
 
         <main className={`tweets`}>

@@ -202,6 +202,34 @@ def get_tweet(tweet_id):
     return json.dumps(res)
 
 
+# Get Twitter user data if valid user,
+# else return as invalid search query
+@app.route('/query/<user>', methods=['GET'])
+@cross_origin()
+def get_profile(user):
+    data = getUserData(user)
+    user_data = dict()
+
+    if 'errors' in data or 'error' in data:
+        user_data['type'] = 'search'
+        user_data['query'] = user
+    else:
+        user_data['type'] = 'profile'
+        user_data['query'] = user
+
+        if 'name' in data:
+            user_data['name'] = data['name']
+        else:
+            user_data['name'] = None
+
+        if 'profile_image_url_https' in data:
+            user_data['image'] = data['profile_image_url_https']
+        else:
+            user_data['image'] = None
+
+    return json.dumps(user_data)
+
+
 # Get homepage tweets by page number
 @app.route('/home/<page>', methods=['GET'])
 @cross_origin()

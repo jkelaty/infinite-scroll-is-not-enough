@@ -177,24 +177,29 @@
   padding: 10px 15px;
   border-bottom: 1px solid rgb(56, 68, 77);
   user-select: text;
-  cursor: pointer;
   @include transition(0.2s background-color);
 
-  &:not(.header):hover {
-    background: rgb(25, 39, 52);
+  &:not(.header) {
+    cursor: pointer;
+
+    &:hover {
+      background: rgb(25, 39, 52);
+    }
   }
 }
 
 .search-history-item {
   display: flex;
   align-items: center;
-  justify-content: center;
   font-size: 15px;
   font-weight: 400;
+  min-width: calc(100% - 45px);
+  max-width: calc(100% - 45px);
 
   &.header {
     font-size: 19px;
     font-weight: 700;
+    min-width: unset;
   }
 
   .search-icon {
@@ -214,6 +219,12 @@
     border-radius: 100%;
     user-select: none;
   }
+}
+
+.search-history-query {
+  max-width: calc(100% - 50px);
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .search-history-profile-data {
@@ -246,6 +257,7 @@
   &.clear-all {
     height: 28px;
     padding: 0 15px;
+    cursor: pointer;
   }
 
   &.clear-single {
@@ -263,6 +275,19 @@
     width: 12.19px;
     fill: rgb(29, 161, 242);
   }
+}
+
+.search-history-empty, .loading-search-history {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(136, 153, 166);
+  padding: 10px;
+  padding-top: 20px;
+}
+
+.loading-search-history>div {
+  text-align: center;
+  margin: auto;
 }
 
 

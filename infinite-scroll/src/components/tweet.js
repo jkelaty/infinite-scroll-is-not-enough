@@ -166,10 +166,8 @@ class Tweet extends React.Component {
     }
     else {
       fetch('https://infinite-scroll-is-not-enough.herokuapp.com/like/' + this.tweet.id, { method: 'Get' })
-        .then(response => response.text())
-        .then((res) => {
-          let likes = JSON.parse(res)
-
+        .then(res => res.json())
+        .then(likes => {
           if (likes.length > 0) {
             this.likeCount.previous = this.likeCount.current
             this.likeCount.current  = likes[0]['likes']
@@ -185,10 +183,8 @@ class Tweet extends React.Component {
     }
     else {
       fetch('https://infinite-scroll-is-not-enough.herokuapp.com/unlike/' + this.tweet.id, { method: 'Get' })
-        .then(response => response.text())
-        .then((res) => {
-          let likes = JSON.parse(res)
-
+        .then(res => res.json())
+        .then(likes => {
           if (likes.length > 0) {
             this.likeCount.previous = this.likeCount.current
             this.likeCount.current  = likes[0]['likes']
@@ -225,12 +221,10 @@ class Tweet extends React.Component {
     };
   
     fetch('https://infinite-scroll-is-not-enough.herokuapp.com/register/', requestOptions)
-      .then(response => response.text())
-      .then((res) => {
-        let new_id = JSON.parse(res)
-
-        if (new_id.length > 0) {
-          this.tweet.id = new_id[0]['id']
+      .then(res => res.json())
+      .then(tweet_id => {
+        if (tweet_id.length > 0) {
+          this.tweet.id = tweet_id[0]['id']
           callback.call()
         }
       })

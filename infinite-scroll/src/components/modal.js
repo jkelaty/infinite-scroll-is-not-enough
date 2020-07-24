@@ -12,7 +12,7 @@ function clearLocalStorage() {
   }
 }
 
-const Modal = ({ showModal, toggleModal }) => {
+const Modal = ({ showModal, closeModal }) => {
   const [darkMode, toggleDarkMode] = useState(
     (typeof window !== `undefined`)
       ? ((window.localStorage.getItem('ui-dark-mode') === 'on') || false)
@@ -76,7 +76,7 @@ const Modal = ({ showModal, toggleModal }) => {
 
             </div>
             
-            <button className={`close-modal`} onClick={toggleModal}>{`Close`}</button>
+            <button className={`close-modal`} onClick={closeModal}>{`Close`}</button>
           </div>
         </div>
 

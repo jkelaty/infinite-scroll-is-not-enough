@@ -69,10 +69,8 @@ class Index extends React.Component {
 
   fetchTweets() {
     fetch('https://infinite-scroll-is-not-enough.herokuapp.com/home/' + this.state.currentPage, { method: 'Get' })
-      .then(response => response.text())
-      .then((res) => {
-        let tweet_arr = JSON.parse(res)
-
+      .then(res => res.json())
+      .then(tweet_arr => {
         if (tweet_arr.length === 0) {
           this.setState({
             canLoadMore: false,
