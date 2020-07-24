@@ -45,24 +45,22 @@
     background-color: rgba(0, 0, 0, 0) !important;
     border-color: rgb(29, 161, 242);
 
-    .search-icon {
+    .search-icon-wrapper>.search-icon {
       fill: rgb(29, 161, 242) !important;
     }
 
-    .clear-icon-wrapper {
-      opacity: 1;
-      cursor: pointer;
-    }
-
-    .search-history-wrapper {
+    .search-box:not(:placeholder-shown)~.clear-icon-wrapper, .search-history-wrapper {
       display: block;
     }
   }
 }
 
 .search-icon {
-  position: relative;
   fill: rgb(136, 153, 166);
+}
+
+.search-icon-wrapper>.search-icon {
+  position: relative;
   height: 1.25em;
   padding-left: 10px;
   min-width: 30px;
@@ -75,31 +73,26 @@
   align-items: center;
   padding: 10px;
   width: 100%;
+  position: relative;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  background: none;
+  border: none;
+  margin: 0;
+  color: rgb(255, 255, 255);
 
-  input {
-    position: relative;
-    min-width: calc(100% - 8px);
-    width: 100%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    background: none;
-    border: none;
-    margin: 0;
-    color: rgb(255, 255, 255);
-
-    &:focus {
-      outline: none;
-    }
+  &:focus {
+    outline: none;
   }
 }
 
 ::placeholder {
-  color: rgb(136, 153, 166);;
+  color: rgb(136, 153, 166);
 }
 
 .clear-icon-wrapper {
-  opacity: 0;
+  display: none;
   position: relative;
   background-color: rgb(29, 161, 242);
   max-height: 22px;
@@ -109,8 +102,13 @@
   border-radius: 100%;
   margin-right: 10px;
   top: 50%;
+  cursor: pointer;
   @include transform(translateY(-50%));
   @include transition(none !important);
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .clear-icon {
@@ -159,14 +157,112 @@
   display: none;
   position: absolute;
   width: 100%;
+  min-height: 100px;
   top: calc(100% + 1px);
   left: 0;
   border-radius: 5px;
   box-shadow: rgba(136, 153, 166, 0.2) 0px 0px 15px, rgba(136, 153, 166, 0.15) 0px 0px 3px 1px;
   background-color: rgb(21, 32, 43);
 
-  height: 300px;
-  padding-top: 20px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.search-history-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgb(56, 68, 77);
+  user-select: text;
+  cursor: pointer;
+  @include transition(0.2s background-color);
+
+  &:not(.header):hover {
+    background: rgb(25, 39, 52);
+  }
+}
+
+.search-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 400;
+
+  &.header {
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .search-icon {
+    fill: rgb(136, 153, 166);
+    height: 25px;
+    width: 25px;
+    padding: 7px;
+    margin-right: 10px;
+    border-radius: 100%;
+    background-color: rgb(37, 51, 65);
+  }
+
+  .search-history-profile-image {
+    height: 39px;
+    width: 39px;
+    margin-right: 10px;
+    border-radius: 100%;
+    user-select: none;
+  }
+}
+
+.search-history-profile-data {
+  text-align: left;
+}
+
+.search-history-profile-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.search-history-profile-handle {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(110, 118, 125);
+}
+
+.search-history-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgb(29, 161, 242);
+  border-radius: 28px;
+  vertical-align: middle;
+  user-select: none;
+  @include transition(0.2s background-color);
+
+  &.clear-all {
+    height: 28px;
+    padding: 0 15px;
+  }
+
+  &.clear-single {
+    height: 30px;
+    width: 30px;
+  }
+
+  &:hover {
+    background: rgba(29, 161, 242, 0.1);
+  }
+
+  .clear-icon {
+    padding: 0;
+    height: 12.19px;
+    width: 12.19px;
+    fill: rgb(29, 161, 242);
+  }
 }
 
 

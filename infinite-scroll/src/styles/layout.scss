@@ -21,7 +21,7 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .search-bar-wrapper {
+    .search-bar-wrapper, .search-history-item>.search-icon {
       background-color: rgb(32, 35, 39);
     }
 
@@ -37,7 +37,7 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .tweet:hover, .navbar-logo-wrapper:hover, .settings-icon-wrapper:hover {
+    .tweet:hover, .navbar-logo-wrapper:hover, .settings-icon-wrapper:hover, .search-history-entry:not(.header):hover {
       background: rgb(21, 24, 28);
     }
 
@@ -52,6 +52,10 @@ html {
     .search-history-wrapper {
       box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px, rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
       background-color: rgb(0, 0, 0);
+    }
+
+    .search-history-entry {
+      border-bottom: 1px solid rgb(47, 51, 54);
     }
 
     .light-toggle:before {
