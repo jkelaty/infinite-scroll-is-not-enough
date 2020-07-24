@@ -21,7 +21,7 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .search-bar {
+    .search-bar-wrapper {
       background-color: rgb(32, 35, 39);
     }
 
@@ -29,7 +29,7 @@ html {
       background-color: rgb(47, 51, 54);
     }
 
-    .search-icon {
+    .search-icon, .settings-icon {
       fill: rgb(110, 118, 125);
     }
 
@@ -37,12 +37,21 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .tweet:hover {
+    .tweet:hover, .navbar-logo-wrapper:hover, .settings-icon-wrapper:hover {
       background: rgb(21, 24, 28);
     }
 
     .navbar-logo {
       filter: none;
+    }
+
+    .info-body p, .light-toggle-label {
+      color: rgb(110, 118, 125);
+    }
+
+    .search-history-wrapper {
+      box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 15px, rgba(255, 255, 255, 0.15) 0px 0px 3px 1px;
+      background-color: rgb(0, 0, 0);
     }
 
     .light-toggle:before {
@@ -76,7 +85,7 @@ html {
   &>svg {
     position: absolute;
     color: rgb(255, 255, 255);
-    height: 30px !important;
+    height: 25px !important;
     width: auto !important;
     top: 50%;
     left: 50%;
@@ -90,22 +99,21 @@ html {
   }
 }
 
+/* Scrollbar styling */
+// ::-webkit-scrollbar {
+//   width: 10px;
+// }
 
-// Scrollbar styling
-::-webkit-scrollbar {
-  width: 10px;
-}
+// ::-webkit-scrollbar-track {
+//   background: rgb(217, 217, 217);;
+// }
 
-::-webkit-scrollbar-track {
-  background: rgb(217, 217, 217);;
-}
+// ::-webkit-scrollbar-thumb {
+//   background: #888;
+// }
 
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #555;
+// }
 
 

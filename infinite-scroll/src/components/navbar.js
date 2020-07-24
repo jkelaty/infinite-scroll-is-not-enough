@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, navigate } from "gatsby"
 
-import { Search, Clear } from "./icons"
+import { Search, Clear, Settings } from "./icons"
 import Logo from "../../content/assets/logo.png"
 
 import "../styles/navbar.scss"
@@ -21,7 +21,7 @@ function clearInput() {
   inputRef.current.value = ''
 }
 
-const NavBar = ({title, toggleDarkMode}) => {
+const NavBar = ({ title, toggleModal }) => {
   const placeHolderText = `Generate tweets for @user`
 
   return (
@@ -29,20 +29,28 @@ const NavBar = ({title, toggleDarkMode}) => {
       <div className={`navbar`}>
         <div className={`navbar-inner`}>
 
-          <Link to={`/`}>
-            <img className={`navbar-logo`} alt={`logo`} src={Logo} />
-          </Link>
+          <div className={`navbar-logo-wrapper`}>
+            <Link to={`/`}>
+              <img className={`navbar-logo`} alt={`logo`} src={Logo} />
+            </Link>
+          </div>
           
-          <div className={`search-bar`}>
+          <div className={`search-bar-wrapper`}>
             <span className={`search-icon-wrapper`}>{Search}</span>
+
             <span className={`search-box`}>
               <input placeholder={placeHolderText} ref={inputRef} onKeyDown={(e) => onEnter(e)} />
             </span>
+
             <a className={`clear-icon-wrapper`} onClick={() => clearInput()}>{Clear}</a>
+
+            <div className={`search-history-wrapper`}>
+              {`SEARCH HISTORY`}
+            </div>
           </div>
 
-          <div className={`dark-mode-toggle`}>
-            <span className={`light-toggle`} onClick={toggleDarkMode} />
+          <div className={`settings-icon-wrapper`}>
+            <a onClick={toggleModal}>{Settings}</a>
           </div>
 
         </div>
@@ -52,3 +60,4 @@ const NavBar = ({title, toggleDarkMode}) => {
 }
 
 export default NavBar
+

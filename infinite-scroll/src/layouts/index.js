@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { Helmet } from "react-helmet"
 
-import IntroModal from "../components/intro"
+import Modal from "../components/modal"
 import SEO from "../components/seo"
 import NavBar from "../components/navbar"
 import Favicon from "../../static/favicon.ico"
@@ -20,36 +20,27 @@ const Layout = ({ children }) => {
     }
   `).site.siteMetadata.title
 
-  const [darkMode, toggleMode] = useState(
-    (typeof window !== `undefined`)
-      ? (window.localStorage.getItem('ui-dark-mode') || 'false')
-      : 'false'
-  )
+  const [showModal, toggleModal] = useState(true)
 
   useEffect(() => {
     if (typeof window !== `undefined`) {
-      window.localStorage.setItem('ui-dark-mode', darkMode)
+      window.localStorage.setItem('intro', showModal ? 'show' : 'hide')
+    }
+    if (typeof document !== `undefined`) {
+      document.body.style.overflowY = (showModal ? 'hidden' : 'visible')
     }
   })
-  
-  if (typeof document !== `undefined`) {
-    if (darkMode === 'true') {
-      document.getElementsByTagName('html')[0].classList.add('ui-dark-mode')
-    }
-    else {
-      document.getElementsByTagName('html')[0].classList.remove('ui-dark-mode')
-    }
-  }
 
   return (
     <>
-      <IntroModal />
       <Helmet><link rel="icon" href={Favicon} /></Helmet>
       <SEO title={siteTitle} />
 
+      <Modal showModal={showModal} toggleModal={() => toggleModal( ! showModal )} />
+
       <div className={`infinite-scroll`}>
         <header>
-          <NavBar title={siteTitle} toggleDarkMode={() => toggleMode( ((darkMode === 'true') ? 'false' : 'true') )} />
+          <NavBar title={siteTitle} toggleModal={() => toggleModal( ! showModal )} />
         </header>
 
         <main className={`tweets`}>
