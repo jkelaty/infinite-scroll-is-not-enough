@@ -56,6 +56,10 @@ class Tweet extends React.Component {
       likes:    props.tweet.reply.likes    || defaultReply.likes
     } : defaultReply
 
+    if (props.tweet.id === 0) {
+      this.tweet.id = 0
+    }
+
     this.commentsCount = this.randBetween(100, 1000)
     this.retweetsCount = this.randBetween(100, 1000)
     this.likeCount     = {
@@ -75,69 +79,88 @@ class Tweet extends React.Component {
     this.close  = this.closeModal.bind(this)
   }
 
+  componentDidMount() {
+    if (this.isLiked()) {
+      this.setState({
+        liked: true,
+        inanimate: true
+      })
+    }
+  }
+
   render() {
     return (
       <>
-        <div className={`tweet`}>
+        <div className={`tweet-wrapper`}>
+          <div className={`tweet generated`}>
 
-          <ShareModal
-            key={this.tweet.id}
-            show={this.state.showShareModal}
-            tweet={this.tweet.id}
-            close={this.close}/>
+            <ShareModal
+              key={this.tweet.id + `-modal`}
+              show={this.state.showShareModal}
+              tweet={this.tweet.id}
+              close={this.close}
+            />
 
-          <span className={`tweet-profile-wrapper`}>
-            <img className={`tweet-profile-image-overlay`} onClick={() => this.generateUser()} alt={`tweet-profile-overlay`} src={Robot} />
-            <img className={`tweet-profile-image generated`} onClick={() => this.generateUser()} alt={`tweet-profile`} src={this.tweet.image} />
-            <div className={`tweet-profile-separator` + (this.state.showReply ? ` expanded` : ``)} />
-          </span>
+            <span className={`tweet-profile-wrapper`}>
+              <img className={`tweet-profile-image-overlay`} onClick={() => this.generateUser()} alt={`tweet-profile-overlay`} src={Robot} />
+              <img className={`tweet-profile-image generated`} onClick={() => this.generateUser()} alt={`tweet-profile`} src={this.tweet.image} />
+              <div className={`tweet-profile-separator` + (this.state.showReply ? ` expanded` : ``)} />
+            </span>
 
-          <span className={`tweet-content`}>
-    
-            <div className={`tweet-name-date`}>
-              <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name + ` GPT-2`}</span>
-              <span className={`tweet-profile-handle`} onClick={() => this.generateUser()}>{`@` + this.tweet.handle + `_GPT-2`}</span>
-              <span className={`tweet-separator`}>{`·`}</span>
-              <span className={`tweet-date`}>{this.tweet.date}</span>
-            </div>
-    
-            <div className={`tweet-text`}>{this.tweet.tweet}</div>
-            
-            <div className={`tweet-icons`}>
-              <Icon
-                icon={Comments}
-                type={`comments`}
-                curr={this.commentsCount}
-                callback={() => this.toggleReply()}/>
-
-              <Icon
-                icon={Retweet}
-                type={`retweet`}
-                curr={this.retweetsCount}/>
-
-              {this.state.liked ?
+            <span className={`tweet-content`}>
+      
+              <div className={`tweet-name-date`}>
+                <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name + ` GPT-2`}</span>
+                <span className={`tweet-profile-handle`} onClick={() => this.generateUser()}>{`@` + this.tweet.handle + `_GPT-2`}</span>
+                <span className={`tweet-separator`}>{`·`}</span>
+                <span className={`tweet-date`}>{this.tweet.date}</span>
+              </div>
+      
+              <div className={`tweet-text`}>{this.tweet.tweet}</div>
+              
+              <div className={`tweet-icons`}>
                 <Icon
-                  icon={Liked}
-                  type={`liked`}
-                  prev={this.likeCount.previous}
-                  curr={this.likeCount.current}
-                  callback={() => this.unlikeTweet()}/>
-              :
-                <Icon
-                  icon={Like}
-                  type={`like`}
-                  prev={this.likeCount.previous}
-                  curr={this.likeCount.current}
-                  callback={() => this.likeTweet()}/>
-              }
+                  icon={Comments}
+                  type={`comments`}
+                  curr={this.commentsCount}
+                  callback={() => this.toggleReply()}
+                />
 
-              <Icon
-                icon={Share}
-                type={`share`}
-                callback={() => this.shareTweet()}/>
-            </div>
-    
-          </span>
+                <Icon
+                  icon={Retweet}
+                  type={`retweet`}
+                  curr={this.retweetsCount}
+                />
+
+                {this.state.liked ?
+                  <Icon
+                    icon={Liked}
+                    type={`liked`}
+                    prev={this.likeCount.previous}
+                    curr={this.likeCount.current}
+                    inanimate={this.state.inanimate}
+                    callback={() => this.unlikeTweet()}
+                  />
+                :
+                  <Icon
+                    icon={Like}
+                    type={`like`}
+                    prev={this.likeCount.previous}
+                    curr={this.likeCount.current}
+                    callback={() => this.likeTweet()}
+                  />
+                }
+
+                <Icon
+                  icon={Share}
+                  type={`share`}
+                  callback={() => this.shareTweet()}
+                />
+              </div>
+      
+            </span>
+
+          </div>
 
           <AnimateHeight
             duration={200}
@@ -146,10 +169,32 @@ class Tweet extends React.Component {
             <Reply tweet={this.reply} />
 
           </AnimateHeight>
-          
         </div>
       </>
     )
+  }
+
+  isLiked() {
+    if (typeof window !== `undefined` && this.tweet.id && this.likeCount.current) {
+      return (window.localStorage.getItem('liked-tweets') || "").includes(this.tweet.id.toString())
+    }
+    return false
+  }
+
+  setLiked() {
+    if (typeof window !== `undefined` && this.tweet.id) {
+      let tweets = window.localStorage.getItem('liked-tweets') || ""
+      tweets += '|' + this.tweet.id.toString() + '|'
+      window.localStorage.setItem('liked-tweets', tweets)
+    }
+  }
+
+  unsetLiked() {
+    if (typeof window !== `undefined` && this.tweet.id) {
+      let tweets = window.localStorage.getItem('liked-tweets') || ""
+      tweets = tweets.replace('|' + this.tweet.id.toString() + '|', '')
+      window.localStorage.setItem('liked-tweets', tweets)
+    }
   }
 
   generateUser() {
@@ -171,7 +216,11 @@ class Tweet extends React.Component {
           if (likes.length > 0) {
             this.likeCount.previous = this.likeCount.current
             this.likeCount.current  = likes[0]['likes']
-            this.setState({ liked: true })
+            this.setLiked()
+            this.setState({
+              liked: true,
+              inanimate: false
+            })
           }
         })
     }
@@ -188,7 +237,11 @@ class Tweet extends React.Component {
           if (likes.length > 0) {
             this.likeCount.previous = this.likeCount.current
             this.likeCount.current  = likes[0]['likes']
-            this.setState({ liked: false })
+            this.unsetLiked()
+            this.setState({
+              liked: false,
+              inanimate: false
+            })
           }
         })
     }

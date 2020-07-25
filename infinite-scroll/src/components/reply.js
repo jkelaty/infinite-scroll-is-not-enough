@@ -21,7 +21,7 @@ const Reply = (props) => {
 
   return (
     <>
-      <div className={`tweet-reply`} onClick={() => openTweet(tweet.handle, tweet.id)}>
+      <div className={`tweet reply`} onClick={() => openTweet(tweet.handle, tweet.id)}>
 
         <span className={`tweet-profile-wrapper`}>
           <img className={`tweet-profile-image`} onClick={(e) => generateUser(e, tweet.handle)} alt={`tweet-profile`} src={tweet.image} />
@@ -41,21 +41,25 @@ const Reply = (props) => {
           <div className={`tweet-icons`}>
             <Icon
               icon={Comments}
-              type={`comments`}/>
+              type={`comments`}
+            />
 
             <Icon
               icon={Retweet}
               type={`retweet`}
-              curr={tweet.retweets}/>
+              curr={tweet.retweets}
+            />
 
             <Icon
               icon={Like}
               type={`like`}
-              curr={tweet.likes}/>
+              curr={tweet.likes}
+            />
 
             <Icon
               icon={Share}
-              type={`share`}/>
+              type={`share`}
+            />
           </div>
 
         </span>

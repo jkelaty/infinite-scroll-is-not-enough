@@ -73,22 +73,37 @@ class NavBar extends React.Component {
             </div>
             
             <div className={`search-bar-wrapper`}>
-              <span className={`search-icon-wrapper`}>{Search}</span>
+              <span className={`search-icon-wrapper`}>
+                {Search}
+              </span>
+
               <input className={`search-box`} placeholder={this.placeHolderText} ref={this.inputRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} />
-              <a className={`clear-icon-wrapper`} ref={this.clearRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} onClick={() => this.clearInput()}>{Clear}</a>
+
+              <a className={`clear-icon-wrapper`} ref={this.clearRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} onClick={() => this.clearInput()}>
+                {Clear}
+              </a>
+              
               <div className={`search-history-wrapper`} ref={this.searchRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)}>
   
                 {(this.state.searchHistory === null) ?
-                  <div className={`loading-search-history`}><MoonLoader size={30} color={`#1DA1F2`} /></div>
+
+                  <div className={`loading-search-history`}>
+                    <MoonLoader size={30} color={`#1DA1F2`} />
+                  </div>
+
                 : (searchHistory.length > 0) ?
+
                   <div className={`search-history-entry header`}>
                     <span className={`search-history-item header`}>{`Recent`}</span>
                     <a className={`search-history-clear clear-all`} onClick={(e) => this.clearSearchQuery(e, true)}>{`Clear all`}</a>
                   </div>
+
                 :
+
                   <div className={`search-history-empty`}>
                     {`Try searching for a Twitter handle`}
                   </div>
+
                 }
 
                 {searchHistory}
@@ -96,7 +111,7 @@ class NavBar extends React.Component {
               </div>
             </div>
   
-            <div className={`settings-icon-wrapper`}>
+            <div className={`info-icon-wrapper`}>
               <a onClick={this.openModal}>{Settings}</a>
             </div>
   

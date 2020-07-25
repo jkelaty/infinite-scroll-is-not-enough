@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import { useStaticQuery, graphql } from "gatsby"
+import React from "react"
 import { Helmet } from "react-helmet"
 
 import Modal from "../components/modal"
@@ -9,49 +8,61 @@ import Favicon from "../../static/favicon.ico"
 
 import "../styles/layout.scss"
 
-const Layout = ({ children }) => {
-  const siteTitle = useStaticQuery(graphql`
-    query HeaderQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `).site.siteMetadata.title
+class Layout extends React.Component {
+  constructor(props) {
+    super(props)
 
-  const [showModal, toggleModal] = useState(true)
+    React.Children.only(props.children)
 
-  useEffect(() => {
-    if (typeof window !== `undefined`) {
-      window.localStorage.setItem('intro', showModal ? 'show' : 'hide')
+    this.siteTitle = `Infinite Scroll Is Not Enough`
+
+    this.state = {
+      showModal: true,
+      demoActive: true
     }
+  }
+
+  render() {
     if (typeof document !== `undefined`) {
-      document.body.style.overflowY = (showModal ? 'hidden' : 'visible')
+      document.body.style.overflowY = (this.state.showModal ? 'hidden' : 'visible')
     }
-  })
 
-  return (
-    <>
-      <Helmet><link rel="icon" href={Favicon} /></Helmet>
-      <SEO title={siteTitle} />
+    return (
+      <>
+        <Helmet><link rel="icon" href={Favicon} /></Helmet>
+        <SEO title={this.siteTitle} />
+  
+        <Modal
+          showModal={this.state.showModal}
+          closeModal={() => this.toggleModal(false)}
+          demoActive={this.state.demoActive}
+          toggleDemo={() => this.toggleDemo()}
+        />
+  
+        <div className={`infinite-scroll`}>
+          <header>
+            <NavBar openModal={() => this.toggleModal(true)} />
+          </header>
+  
+          <main className={`tweets`}>
+            {React.cloneElement(this.props.children, { demoActive: this.state.demoActive })}
+          </main>
+  
+          <footer>
+            {null}
+          </footer>
+        </div>
+      </>
+    )
+  }
 
-      <Modal showModal={showModal} closeModal={() => toggleModal(false)} />
+  toggleModal(show = null) {
+    this.setState({ showModal: (show ? show : ! this.state.showModal) })
+  }
 
-      <div className={`infinite-scroll`}>
-        <header>
-          <NavBar openModal={() => toggleModal(true)} />
-        </header>
-
-        <main className={`tweets`}>
-          {children}
-        </main>
-
-        <footer>
-        </footer>
-      </div>
-    </>
-  )
+  toggleDemo() {
+    this.setState({ demoActive: ! this.state.demoActive })
+  }
 }
 
 export default Layout

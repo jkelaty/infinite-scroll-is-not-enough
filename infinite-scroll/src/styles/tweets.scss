@@ -22,7 +22,11 @@ $like-animation: url('../../content/assets/like-animation.png');
   min-height: calc(100vh - 54px);
 }
 
-.tweet, .tweet-reply {
+.tweet-wrapper {
+  border-bottom: 1px solid rgb(56, 68, 77);
+}
+
+.tweet {
   flex-wrap: wrap;
   display: flex;
   text-align: left;
@@ -34,16 +38,10 @@ $like-animation: url('../../content/assets/like-animation.png');
 
 .tweet {
   padding: 10px 15px;
-  border-bottom: 1px solid rgb(56, 68, 77);
 
   &:hover {
     background: rgb(25, 39, 52);
   }
-}
-
-.tweet-reply {
-  width: 100%;
-  padding-top: 20px;
 }
 
 .tweet-profile-wrapper {
@@ -162,6 +160,9 @@ $like-animation: url('../../content/assets/like-animation.png');
   background-position: left center;
   background-repeat: no-repeat;
   @include transform(scale(3));
+}
+
+.icon-wrapper-inner-liked:not(.inanimate):before {
   @include animation(LikedTweet 0.8s steps(24));
 }
 
@@ -293,6 +294,9 @@ $like-animation: url('../../content/assets/like-animation.png');
 
 .icon-liked {
   fill: rgb(224, 36, 94);
+}
+
+.icon-wrapper-inner-liked:not(.inanimate)>.icon-liked {
   @include animation(GrowLike 0.8s);
 }
 

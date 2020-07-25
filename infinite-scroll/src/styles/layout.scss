@@ -29,15 +29,15 @@ html {
       background-color: rgb(47, 51, 54);
     }
 
-    .search-icon, .settings-icon {
+    .search-icon, .settings-icon, .info-icon {
       fill: rgb(110, 118, 125);
     }
 
-    input, .tweet, .tweet-reply, .load-tweets>svg {
+    input, .tweet, .load-tweets>svg {
       color: rgb(217, 217, 217);
     }
 
-    .tweet:hover, .navbar-logo-wrapper:hover, .settings-icon-wrapper:hover, .search-history-entry:not(.header):hover {
+    .tweet:hover, .navbar-logo-wrapper:hover, .info-icon-wrapper:hover, .search-history-entry:not(.header):hover {
       background: rgb(21, 24, 28);
     }
 

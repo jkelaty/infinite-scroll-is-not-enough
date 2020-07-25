@@ -41,7 +41,7 @@ const Icon = (props) => {
     <span className={`icon-wrapper icon-wrapper-` + props.type}>
       <span className={`icon-wrapper-outer icon-wrapper-outer-` + props.type} onClick={props.callback}>
 
-        <span className={`icon-wrapper-inner icon-wrapper-inner-` + props.type}>
+        <span className={`icon-wrapper-inner icon-wrapper-inner-` + props.type + (props.inanimate ? ` inanimate` : ``)}>
           {props.icon}
         </span>
 

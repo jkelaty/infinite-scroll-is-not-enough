@@ -241,7 +241,7 @@ def get_home(page):
     cur.execute("""
         SELECT *
         from tweets
-        ORDER BY likes DESC
+        ORDER BY likes DESC, id DESC
         OFFSET %s
         FETCH NEXT 10 ROWS ONLY
         """, (int(page) * 10,))
@@ -378,6 +378,76 @@ def generate_tweets(user):
         tweets.append(tweet) # Append created tweet to return object
 
     return json.dumps(tweets)
+
+
+# Retrieve pre-generated tweets from a database
+# for demonstrating expected app functionality
+@app.route('/demo/<user>/<page>', methods=['GET'])
+@cross_origin()
+def generate_tweets_demo(user, page):
+    if user[0] == '@':
+        user = user[1:]
+
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+    cur.execute("""
+        SELECT *
+        from demo
+        where handle = %s
+        OFFSET %s
+        FETCH NEXT 10 ROWS ONLY
+        """, (user, int(page) * 10,))
+    res = cur.fetchall()
+    cur.close()
+
+    user_data = getUserData(user)
+
+    for tweet in res:
+        prompt = getTweetData(tweet['tweet_id'])
+
+        tweet['id']    = None
+        tweet['likes'] = None
+        tweet['name']  = None
+        tweet['image'] = None
+        tweet['date']  = date.today().strftime('%b %e')
+
+        if 'name' in user_data:
+            tweet['name'] = user_data['name']
+
+        if 'profile_image_url_https' in user_data:
+            tweet['image'] = user_data['profile_image_url_https']
+
+        tweet['reply'] = dict()
+
+        tweet['reply']['image']  = tweet['image']
+        tweet['reply']['name']   = tweet['name']
+        tweet['reply']['handle'] = tweet['handle']
+
+        if 'id_str' in prompt:
+            tweet['reply']['id'] = prompt['id_str']
+        else:
+            tweet['reply']['id'] = None
+
+        if 'created_at' in prompt:
+            tweet['reply']['date'] = datetime.strftime(datetime.strptime(prompt['created_at'] ,'%a %b %d %H:%M:%S +0000 %Y'), '%b %e')
+        else:
+            tweet['reply']['date'] = None
+
+        if 'full_text' in prompt:
+            tweet['reply']['tweet'] = prompt['full_text']
+        else:
+            tweet['reply']['tweet'] = None
+
+        if 'retweet_count' in prompt:
+            tweet['reply']['retweets'] = prompt['retweet_count']
+        else:
+            tweet['reply']['retweets'] = None
+
+        if 'favorite_count' in prompt:
+            tweet['reply']['likes'] = prompt['favorite_count']
+        else:
+            tweet['reply']['likes'] = None
+
+    return json.dumps(res)
 
 
 if __name__ == '__main__':

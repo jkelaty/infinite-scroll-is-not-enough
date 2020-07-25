@@ -8,26 +8,23 @@ import Tweet from "../components/tweet"
 class Index extends React.Component {
   constructor(props) {
     super(props)
-    
-    this.loadingElement = <div className={`loading-tweets`}><MoonLoader size={30} color={`#1DA1F2`} /></div>
-    this.loadMore       = <div className={`load-tweets`} onClick={() => this.fetchTweetsAndSetState()}><FontAwesomeIcon icon={faRedoAlt} /></div>
 
     this.state = this.getState(props)
 
-    this.getTweets      = this.fetchTweets.bind(this)
     this.scrollCallback = this.handleScroll.bind(this)
+    this.fetchCallback  = this.fetchTweets.bind(this)
   }
 
   componentDidMount() {
     if (typeof window !== `undefined`) {
-      window.addEventListener('scroll', () => this.handleScroll())
+      window.addEventListener('scroll', this.scrollCallback, true)
     }
     this.fetchTweets()
   }
 
   componentWillUnmount() {
     if (typeof window !== `undefined`) {
-      window.removeEventListener('scroll', () => this.handleScroll())
+      window.removeEventListener('scroll', this.scrollCallback, true)
     }
   }
 
@@ -37,22 +34,35 @@ class Index extends React.Component {
       let currentPosition = window.pageYOffset + window.innerHeight
     
       if ( ! this.state.loadingTweets && currentPosition >= maxPosition ) {
-        this.fetchTweetsAndSetState()
+        this.initLoadingAndFetchTweets()
       }
     }
   }
 
-  fetchTweetsAndSetState() {
+  initLoadingAndFetchTweets() {
     this.setState({
       loadingTweets: true
-    }, () => this.getTweets())
+    }, this.fetchCallback)
   }
 
   render() {
     return (
       <>
         {this.state.tweets}
-        {this.state.loadingTweets ? this.loadingElement : (this.state.canLoadMore ? this.loadMore : null)}
+
+        {this.state.loadingTweets ?
+
+          <div className={`loading-tweets`}>
+            <MoonLoader size={30} color={`#1DA1F2`} />
+          </div>
+
+        : this.state.canLoadMore ?
+
+          <div className={`load-tweets`} onClick={() => this.initLoadingAndFetchTweets()}>
+            <FontAwesomeIcon icon={faRedoAlt} />
+          </div>
+
+        : null}
       </>
     )
   }
