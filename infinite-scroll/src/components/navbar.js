@@ -33,28 +33,28 @@ class NavBar extends React.Component {
   
     if (this.state.searchHistory !== null) {
       for (let i = 0; i < this.state.searchHistory.length; ++i) {
-        if (this.state.searchHistory[i].type === 'search') {
+        if (this.state.searchHistory[i].type === `search`) {
           searchHistory.push(
             <div className={`search-history-entry`} key={i} onClick={() => this.generateUser(this.state.searchHistory[i].query)}>
               <span className={`search-history-item`}>
                 {Search}
                 <span className={`search-history-query`}>{this.state.searchHistory[i].query}</span>
               </span>
-              <a className={`search-history-clear clear-single`} onClick={(e) => this.clearSearchQuery(e, i)}>{Clear}</a>
+              <span className={`search-history-clear clear-single`} onClick={(e) => this.clearSearchQuery(e, i)}>{Clear}</span>
             </div>
           )
         }
-        else if (this.state.searchHistory[i].type == 'profile') {
+        else if (this.state.searchHistory[i].type === `profile`) {
           searchHistory.push(
             <div className={`search-history-entry`} key={i} onClick={() => this.generateUser(this.state.searchHistory[i].query)}>
               <span className={`search-history-item`}>
-                <img className={`search-history-profile-image`} src={this.state.searchHistory[i].image} />
+                <img className={`search-history-profile-image`} src={this.state.searchHistory[i].image} alt={`tweet-profile`} />
                 <span className={`search-history-profile-data`}>
                   <div className={`search-history-profile-name`}>{this.state.searchHistory[i].name}</div>
                   <div className={`search-history-profile-handle`}>{`@` + this.state.searchHistory[i].query}</div>
                 </span>
               </span>
-              <a className={`search-history-clear clear-single`} onClick={(e) => this.clearSearchQuery(e, i)}>{Clear}</a>
+              <span className={`search-history-clear clear-single`} onClick={(e) => this.clearSearchQuery(e, i)}>{Clear}</span>
             </div>
           )
         }
@@ -79,9 +79,9 @@ class NavBar extends React.Component {
 
               <input className={`search-box`} placeholder={this.placeHolderText} ref={this.inputRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} />
 
-              <a className={`clear-icon-wrapper`} ref={this.clearRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} onClick={() => this.clearInput()}>
+              <span className={`clear-icon-wrapper`} ref={this.clearRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)} onClick={() => this.clearInput()}>
                 {Clear}
-              </a>
+              </span>
               
               <div className={`search-history-wrapper`} ref={this.searchRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)}>
   
@@ -95,7 +95,7 @@ class NavBar extends React.Component {
 
                   <div className={`search-history-entry header`}>
                     <span className={`search-history-item header`}>{`Recent`}</span>
-                    <a className={`search-history-clear clear-all`} onClick={(e) => this.clearSearchQuery(e, true)}>{`Clear all`}</a>
+                    <span className={`search-history-clear clear-all`} onClick={(e) => this.clearSearchQuery(e, true)}>{`Clear all`}</span>
                   </div>
 
                 :
@@ -112,7 +112,7 @@ class NavBar extends React.Component {
             </div>
   
             <div className={`info-icon-wrapper`}>
-              <a onClick={this.openModal}>{Settings}</a>
+              <span onClick={this.openModal}>{Settings}</span>
             </div>
   
           </div>

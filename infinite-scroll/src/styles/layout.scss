@@ -45,7 +45,7 @@ html {
       filter: none;
     }
 
-    .info-body p, .light-toggle-label {
+    .info-body p {
       color: rgb(110, 118, 125);
     }
 
@@ -58,13 +58,13 @@ html {
       border-bottom: 1px solid rgb(47, 51, 54);
     }
 
-    .light-toggle:before {
-      background-color: #d7d7d7;
-      @include transform(translateX(125%));
-    }
-    .light-toggle:after {
-      @include transform(translateX(-2.5%) rotateY(180deg));
-    }
+    // .light-toggle:before {
+    //   background-color: #d7d7d7;
+    //   @include transform(translateX(125%));
+    // }
+    // .light-toggle:after {
+    //   @include transform(translateX(-2.5%) rotateY(180deg));
+    // }
   }
 }
 
@@ -119,5 +119,4 @@ html {
 // ::-webkit-scrollbar-thumb:hover {
 //   background: #555;
 // }
-
 
