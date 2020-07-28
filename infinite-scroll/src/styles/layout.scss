@@ -16,7 +16,7 @@ html {
   &.ui-dark-mode {
     background: rgb(0, 0, 0);
 
-    .navbar, .modal-content {
+    .navbar, .modal-content, .info-header.title {
       background: rgb(0, 0, 0);
       color: rgb(217, 217, 217);
     }
@@ -37,7 +37,7 @@ html {
       color: rgb(217, 217, 217);
     }
 
-    .tweet:hover, .navbar-logo-wrapper:hover, .info-icon-wrapper:hover, .search-history-entry:not(.header):hover {
+    .tweet:hover, .navbar-logo-wrapper:hover, .info-icon-wrapper:hover, .search-history-entry:not(.header):hover, .info-settings, .info-about {
       background: rgb(21, 24, 28);
     }
 
@@ -45,7 +45,7 @@ html {
       filter: none;
     }
 
-    .info-body p {
+    .info-body p, .info-header {
       color: rgb(110, 118, 125);
     }
 
@@ -56,6 +56,20 @@ html {
 
     .search-history-entry {
       border-bottom: 1px solid rgb(47, 51, 54);
+    }
+
+    .theme-toggle {
+      background: rgb(0, 0, 0);
+    }
+
+    .toggle-option.light-theme {
+      opacity: 0;
+      visibility: none;
+    }
+
+    .toggle-option.dark-theme {
+      opacity: 1;
+      visibility: visible;
     }
 
     // .light-toggle:before {
