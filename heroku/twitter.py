@@ -56,7 +56,7 @@ def generateTweet(prompt):
             'isContinuation': False
         },
         'startFromBeginning': True,
-        'length': 140 # Tweet length
+        'length': 200 # Tweet length
     }
 
     # POST request headers (API credentials)

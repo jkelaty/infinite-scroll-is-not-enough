@@ -41,7 +41,7 @@
   border-radius: 40px;
   border: 1px solid rgba(0, 0, 0, 0);
 
-  &:focus-within {
+  &:focus-within, &.active {
     background-color: rgba(0, 0, 0, 0) !important;
     border-color: rgb(29, 161, 242);
 

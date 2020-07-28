@@ -11,21 +11,35 @@ class NavBar extends React.Component {
   constructor(props) {
     super(props)
 
-    this.inputRef  = React.createRef()
-    this.clearRef  = React.createRef()
-    this.searchRef = React.createRef()
+    this.wrapperRef = React.createRef()
+    this.inputRef   = React.createRef()
+    this.clearRef   = React.createRef()
+    this.searchRef  = React.createRef()
 
     this.searchQueriesMaxLength = 5
     this.placeHolderText = `Generate tweets for @user`
     this.openModal = props.openModal
 
     this.state = {
-      searchHistory: null
+      searchHistory: null,
+      searchActive: false
     }
+
+    this.clickCallback = this.handleClick.bind(this)
   }
 
   componentDidMount() {
     this.initSearchHistory()
+
+    if (typeof window !== `undefined`) {
+      window.addEventListener('mousedown', this.clickCallback, true)
+    }
+  }
+
+  componentWillUnmount() {
+    if (typeof window !== `undefined`) {
+      window.removeEventListener('mousedown', this.clickCallback, true)
+    }
   }
 
   render() {
@@ -72,7 +86,7 @@ class NavBar extends React.Component {
               </Link>
             </div>
             
-            <div className={`search-bar-wrapper`}>
+            <div className={`search-bar-wrapper` + (this.state.searchActive ? ` active` : ``)} ref={this.wrapperRef}>
               <span className={`search-icon-wrapper`}>
                 {Search}
               </span>
@@ -86,24 +100,18 @@ class NavBar extends React.Component {
               <div className={`search-history-wrapper`} ref={this.searchRef} tabIndex={`0`} onKeyDown={(e) => this.onKeyPress(e)}>
   
                 {(this.state.searchHistory === null) ?
-
                   <div className={`loading-search-history`}>
                     <MoonLoader size={30} color={`#1DA1F2`} />
                   </div>
-
                 : (searchHistory.length > 0) ?
-
                   <div className={`search-history-entry header`}>
                     <span className={`search-history-item header`}>{`Recent`}</span>
                     <span className={`search-history-clear clear-all`} onClick={(e) => this.clearSearchQuery(e, true)}>{`Clear all`}</span>
                   </div>
-
                 :
-
                   <div className={`search-history-empty`}>
                     {`Try searching for a Twitter handle`}
                   </div>
-
                 }
 
                 {searchHistory}
@@ -148,6 +156,15 @@ class NavBar extends React.Component {
           'query': query
         }
       })
+  }
+
+  handleClick(e) {
+    if (this.wrapperRef.current.contains(e.target)) {
+      this.setState({ searchActive: true })
+    }
+    else {
+      this.setState({ searchActive: false })
+    }
   }
 
   clearSearchQuery(e, index) {
@@ -212,6 +229,7 @@ class NavBar extends React.Component {
     this.inputRef.current.blur()
     this.clearRef.current.blur()
     this.searchRef.current.blur()
+    this.setState({ searchActive: false })
   }
 }
 
