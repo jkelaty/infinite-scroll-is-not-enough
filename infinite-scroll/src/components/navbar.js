@@ -217,12 +217,13 @@ class NavBar extends React.Component {
     }
     else if (e.key === 'Escape') {
       this.clearInput()
+      this.unfocus()
     }
   }
 
   clearInput() {
-    this.unfocus()
     this.inputRef.current.value = ''
+    this.inputRef.current.focus()
   }
 
   unfocus() {
