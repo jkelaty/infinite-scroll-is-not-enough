@@ -23,8 +23,18 @@ class Layout extends React.Component {
   }
 
   render() {
-    if (typeof document !== `undefined`) {
-      document.body.style.overflowY = (this.state.showModal ? 'hidden' : 'visible')
+    if (typeof document !== `undefined` && typeof window !== `undefined`) {
+      if (this.state.showModal) {
+        let offset = window.pageYOffset
+        document.body.style.position = `fixed`
+        document.body.style.top = `-${offset}px`
+      }
+      else {
+        let scrollY = document.body.style.top
+        document.body.style.top = ``
+        document.body.style.position = ``
+        window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      }
     }
 
     return (
