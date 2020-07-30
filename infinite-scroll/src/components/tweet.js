@@ -271,7 +271,7 @@ class Tweet extends React.Component {
         tweet: this.tweet.tweet,
         id: this.reply.id
       })
-    };
+    }
   
     fetch('https://infinite-scroll-is-not-enough.herokuapp.com/register/', requestOptions)
       .then(res => res.json())
