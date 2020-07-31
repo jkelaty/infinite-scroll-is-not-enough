@@ -19,7 +19,7 @@ def getTweetData(tweet_id):
 
 
 # Retrieves some numbers of tweets from a user's timeline
-def getPrompts(user):
+def getPrompts(user, count=1):
     AUTH = OAuth1(TWITTER_CREDENTIALS['API_KEY'], TWITTER_CREDENTIALS['API_SECRET'])
     result = requests.get('https://api.twitter.com/1.1/statuses/user_timeline.json?tweet_mode=extended&screen_name=' + user + '&exclude_replies=1&include_rts=0', auth=AUTH).json()
     tweets = list()
@@ -28,9 +28,9 @@ def getPrompts(user):
     if 'errors' in result or 'error' in result or len(result) == 0:
         return tweets
 
-    # Changed to 1 because tweet generation can take up to 30
+    # Defaults to 1 because tweet generation can take up to 30
     # seconds, at which point Heroku breaks the connection
-    for _ in range(1):
+    for _ in range(count):
         index = randrange(len(result))
         new_text = list(result[index]['full_text'])
         

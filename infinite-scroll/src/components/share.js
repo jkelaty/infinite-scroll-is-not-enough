@@ -7,19 +7,22 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 import "../styles/modal.scss"
 
+// Closes modal and resets copied indicator
 function closeModal(close, reset) {
   reset(false)
   close.call()
 }
 
+/*
+ * Share Modal Component
+ * 
+ * Displays a modal with a link to share a
+ * given generated tweet
+ */
 const ShareModal = ({show, tweet, close}) => {
   const [copied, setCopied] = useState(false)
 
-  let shareURL = ''
-
-  if (typeof window !== 'undefined') {
-    shareURL = "https://jkelaty.github.io/infinite-scroll-is-not-enough/tweet?id=" + tweet
-  }
+  let shareURL = `https://jkelaty.github.io/infinite-scroll-is-not-enough/tweet?id=${tweet}`
 
   return (
     <CSSTransition

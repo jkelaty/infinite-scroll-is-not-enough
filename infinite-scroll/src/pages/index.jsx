@@ -5,6 +5,13 @@ import { faRedoAlt } from "@fortawesome/free-solid-svg-icons"
 
 import Tweet from "../components/tweet"
 
+/*
+ * Home Page
+ * 
+ * Retrieve and display home page tweets, also serves as base
+ * class for other pages. getState() and fetchTweets() are overridden
+ * to alter functionality and change desired API endpoint per page.
+ */
 class Index extends React.Component {
   constructor(props) {
     super(props)
@@ -17,6 +24,7 @@ class Index extends React.Component {
 
   componentDidMount() {
     if (typeof window !== `undefined`) {
+      // Add scroll listener
       window.addEventListener('scroll', this.scrollCallback, true)
     }
     this.fetchTweets()
@@ -24,10 +32,12 @@ class Index extends React.Component {
 
   componentWillUnmount() {
     if (typeof window !== `undefined`) {
+      // Remove scroll listener
       window.removeEventListener('scroll', this.scrollCallback, true)
     }
   }
 
+  // Check scroll position (infinite scroll)
   handleScroll() {
     if (this.state.canLoadMore && ! this.state.loadingTweets && ! this.state.error) {
       let maxPosition     = document.body.scrollHeight + 54 - 100
@@ -39,6 +49,7 @@ class Index extends React.Component {
     }
   }
 
+  // Set loading animation and callback to fetch more tweets
   initLoadingAndFetchTweets() {
     this.setState({
       loadingTweets: true
@@ -67,6 +78,7 @@ class Index extends React.Component {
     )
   }
 
+  // Retrieves state object - overriden for derived pages
   getState(props) {
     return {
       tweets: [],
@@ -77,8 +89,9 @@ class Index extends React.Component {
     }
   }
 
+  // Fetches tweets from backend API - overriden for derived pages
   fetchTweets() {
-    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/home/' + this.state.currentPage, { method: 'Get' })
+    fetch(`https://infinite-scroll-is-not-enough.herokuapp.com/home/${this.state.currentPage}`, { method: 'Get' })
       .then(res => res.json())
       .then(tweet_arr => {
         if (tweet_arr.length === 0) {
@@ -92,7 +105,7 @@ class Index extends React.Component {
         let _tweets = []
 
         for (let i = 0; i < tweet_arr.length; ++i) {
-          _tweets.push(<Tweet tweet={tweet_arr[i]} key={tweet_arr[i].id} />)
+          _tweets.push( <Tweet tweet={tweet_arr[i]} key={tweet_arr[i].id} /> )
         }
 
         this.setState({

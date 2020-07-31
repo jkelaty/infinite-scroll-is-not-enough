@@ -11,6 +11,7 @@
   width: 100vw;
   background-color: rgba(110, 118, 125, 0.4);
   opacity: 0;
+  cursor: default;
   @include transition(opacity 1s);
 
   &.appear, &.enter, &.appear-done, &.enter-done {

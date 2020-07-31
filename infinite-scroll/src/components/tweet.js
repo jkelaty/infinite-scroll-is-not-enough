@@ -6,16 +6,24 @@ import Reply from "./reply"
 import ShareModal from "./share"
 import Icon from "./icon"
 import { Comments, Retweet, Like, Liked, Share } from "./icons"
+
 import DefaultProfileImage from "../../content/assets/default-profile-image.png"
 import Robot from "../../content/assets/robot.png"
 
 import "../styles/tweets.scss"
 import "../styles/modal.scss"
 
+/*
+ * Tweet Component
+ * 
+ * Handles all onclick events, API calls for registering,
+ * like/unlike, sharing, and displaying tweet data
+ */
 class Tweet extends React.Component {
   constructor(props) {
     super(props)
 
+    // Placeholder tweet
     const defaultTweet = {
       id:     null,
       image:  DefaultProfileImage,
@@ -25,15 +33,16 @@ class Tweet extends React.Component {
       tweet:  `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ac ex non quam fermentum sagittis sit amet eu elit. Sed ut sapien neque. Sed tincidunt pulvinar cursus. Curabitur malesuada odio sem, ut blandit magna interdum vitae. Aenean semper, sem non condimentum pellentesque sed.`
     }
 
+    // Placeholder reply (prompt)
     const defaultReply = {
-      id:        defaultTweet.id,
-      image:     defaultTweet.image,
-      name:      defaultTweet.name,
-      handle:    defaultTweet.handle,
-      date:      defaultTweet.date,
-      tweet:     defaultTweet.tweet,
-      retweets:  null,
-      likes:     null
+      id:       defaultTweet.id,
+      image:    defaultTweet.image,
+      name:     defaultTweet.name,
+      handle:   defaultTweet.handle,
+      date:     defaultTweet.date,
+      tweet:    defaultTweet.tweet,
+      retweets: null,
+      likes:    null
     }
 
     this.tweet = props.tweet ? {
@@ -60,15 +69,17 @@ class Tweet extends React.Component {
       this.tweet.id = 0
     }
 
+    // Replies and retweets show random count, likes from API call
     this.commentsCount = this.randBetween(100, 1000)
     this.retweetsCount = this.randBetween(100, 1000)
-    this.likeCount     = {
+    this.likeCount = {
       previous: null,
       current: props.tweet ? props.tweet.likes : null
     }
 
     this.state = {
       liked: false,
+      inanimate: false,
       showReply: false,
       showShareModal: false
     }
@@ -80,6 +91,7 @@ class Tweet extends React.Component {
   }
 
   componentDidMount() {
+    // Show liked icon without animation
     if (this.isLiked()) {
       this.setState({
         liked: true,
@@ -95,7 +107,7 @@ class Tweet extends React.Component {
           <div className={`tweet generated`}>
 
             <ShareModal
-              key={this.tweet.id + `-modal`}
+              key={`${this.tweet.id}-modal`}
               show={this.state.showShareModal}
               tweet={this.tweet.id}
               close={this.close}
@@ -110,8 +122,8 @@ class Tweet extends React.Component {
             <span className={`tweet-content`}>
       
               <div className={`tweet-name-date`}>
-                <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{this.tweet.name + ` GPT-2`}</span>
-                <span className={`tweet-profile-handle`} onClick={() => this.generateUser()}>{`@` + this.tweet.handle + `_GPT-2`}</span>
+                <span className={`tweet-profile-name`} onClick={() => this.generateUser()}>{`${this.tweet.name} GPT-2`}</span>
+                <span className={`tweet-profile-handle`} onClick={() => this.generateUser()}>{`@${this.tweet.handle}_GPT-2`}</span>
                 <span className={`tweet-separator`}>{`·`}</span>
                 <span className={`tweet-date`}>{this.tweet.date}</span>
               </div>
@@ -174,43 +186,51 @@ class Tweet extends React.Component {
     )
   }
 
+  // Check if tweet is already liked by user
   isLiked() {
     if (typeof window !== `undefined` && this.tweet.id && this.likeCount.current) {
-      return (window.localStorage.getItem('liked-tweets') || "").includes(this.tweet.id.toString())
+      return (window.localStorage.getItem('liked-tweets') || ``).includes(`|${this.tweet.id.toString()}|`)
     }
     return false
   }
 
+  // Set tweet as liked in local storage. Format is as follows:
+  // |<tweet_id#1>||<tweet_id#2>||<tweet_id#3>|...
   setLiked() {
     if (typeof window !== `undefined` && this.tweet.id) {
-      let tweets = window.localStorage.getItem('liked-tweets') || ""
-      tweets += '|' + this.tweet.id.toString() + '|'
+      let tweets = window.localStorage.getItem('liked-tweets') || ``
+      tweets += `|${this.tweet.id.toString()}|`
       window.localStorage.setItem('liked-tweets', tweets)
     }
   }
 
+  // Remove tweet from liked string from local storage
   unsetLiked() {
     if (typeof window !== `undefined` && this.tweet.id) {
-      let tweets = window.localStorage.getItem('liked-tweets') || ""
-      tweets = tweets.replace('|' + this.tweet.id.toString() + '|', '')
+      let tweets = window.localStorage.getItem('liked-tweets') || ``
+      tweets = tweets.replace(`|${this.tweet.id.toString()}|`, ``)
       window.localStorage.setItem('liked-tweets', tweets)
     }
   }
 
+  // Navigate to page to generate tweets for user
   generateUser() {
-    navigate('/tweets?user=' + this.tweet.handle)
+    navigate(`/tweets?user=${this.tweet.handle}`)
   }
 
+  // Show reply (prompt) tweet
   toggleReply() {
     this.setState({ showReply: ! this.state.showReply })
   }
 
+  // [Register] and like tweet
   likeTweet() {
     if (this.tweet.id === null) {
+      // Tweet is not in database yet, register first with callback
       this.registerTweet(this.like)
     }
     else {
-      fetch('https://infinite-scroll-is-not-enough.herokuapp.com/like/' + this.tweet.id, { method: 'Get' })
+      fetch(`https://infinite-scroll-is-not-enough.herokuapp.com/like/${this.tweet.id}`, { method: 'Get' })
         .then(res => res.json())
         .then(likes => {
           if (likes.length > 0) {
@@ -226,12 +246,14 @@ class Tweet extends React.Component {
     }
   }
 
+  // [Register] and unlike tweet
   unlikeTweet() {
     if (this.tweet.id === null) {
+      // Tweet is not in database yet, register first with callback
       this.registerTweet(this.unlike)
     }
     else {
-      fetch('https://infinite-scroll-is-not-enough.herokuapp.com/unlike/' + this.tweet.id, { method: 'Get' })
+      fetch(`https://infinite-scroll-is-not-enough.herokuapp.com/unlike/${this.tweet.id}`, { method: 'Get' })
         .then(res => res.json())
         .then(likes => {
           if (likes.length > 0) {
@@ -247,18 +269,36 @@ class Tweet extends React.Component {
     }
   }
   
+  // [Register] and open share modal for tweet
   shareTweet() {
     if (this.tweet.id === null) {
+      // Tweet is not in database yet, register first with callback
       this.registerTweet(this.share)
     }
     else {
-      if (typeof document !== `undefined`) {
-        document.body.style.overflowY = 'hidden'
+      if (typeof document !== `undefined` && typeof window !== `undefined`) {
+        // Prevent scrolling
+        let offset = window.pageYOffset
+        document.body.style.position = `fixed`
+        document.body.style.top = `-${offset}px`
       }
       this.setState({ showShareModal: true })
     }
   }
 
+  // Close share modal
+  closeModal() {
+    if (typeof document !== `undefined` && typeof window !== `undefined`) {
+      // Allow scrolling
+      let scrollY = document.body.style.top
+      document.body.style.top = ``
+      document.body.style.position = ``
+      window.scrollTo(0, parseInt(scrollY || '0') * -1)
+    }
+    this.setState({ showShareModal: false })
+  }
+
+  // Register tweet in backend database
   registerTweet(callback) {
     const requestOptions = {
       method: 'POST',
@@ -273,7 +313,7 @@ class Tweet extends React.Component {
       })
     }
   
-    fetch('https://infinite-scroll-is-not-enough.herokuapp.com/register/', requestOptions)
+    fetch(`https://infinite-scroll-is-not-enough.herokuapp.com/register/`, requestOptions)
       .then(res => res.json())
       .then(tweet_id => {
         if (tweet_id.length > 0) {
@@ -283,13 +323,7 @@ class Tweet extends React.Component {
       })
   }
 
-  closeModal() {
-    if (typeof document !== `undefined`) {
-      document.body.style.overflowY = 'visible'
-    }
-    this.setState({ showShareModal: false })
-  }
-
+  // Random # in range - from StackOverflow
   randBetween(low, high) {
     return Math.floor(Math.random() * (high - low + 1)) + low
   }

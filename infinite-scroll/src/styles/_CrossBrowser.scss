@@ -1,4 +1,5 @@
-/* Create keyframes for each browser - from Stack Overflow */
+/* Create keyframes, transforms, transitions, and
+animations for each browser - from StackOverflow */
 
 @mixin keyframes($animationName) {
   @-webkit-keyframes #{$animationName} {

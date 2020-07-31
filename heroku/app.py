@@ -168,6 +168,7 @@ def get_tweet(tweet_id):
         else:
             tweet['image'] = None
 
+        # Create Tweet reply (original prompt)
         tweet['reply'] = dict()
 
         tweet['reply']['image']  = tweet['image']
@@ -265,6 +266,7 @@ def get_home(page):
         else:
             tweet['image'] = None
 
+        # Create Tweet reply (original prompt)
         tweet['reply'] = dict()
 
         tweet['reply']['image']  = tweet['image']
@@ -344,6 +346,7 @@ def generate_tweets(user):
         else:
             tweet['image'] = None
 
+        # Create Tweet reply (original prompt)
         tweet['reply'] = dict()
 
         tweet['reply']['image']  = tweet['image']
@@ -416,6 +419,7 @@ def generate_tweets_demo(user, page):
         if 'profile_image_url_https' in user_data:
             tweet['image'] = user_data['profile_image_url_https']
 
+        # Create Tweet reply (original prompt)
         tweet['reply'] = dict()
 
         tweet['reply']['image']  = tweet['image']

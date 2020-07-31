@@ -7,18 +7,25 @@ import Logo from "../../content/assets/logo.png"
 
 import "../styles/navbar.scss"
 
+/*
+ * Navigation Bar Component
+ * 
+ * Handles search bar + search history. Also provides
+ * links to home page and to show intro modal
+ */
 class NavBar extends React.Component {
   constructor(props) {
     super(props)
 
+    // Refs required for search bar functionality
     this.wrapperRef = React.createRef()
     this.inputRef   = React.createRef()
     this.clearRef   = React.createRef()
     this.searchRef  = React.createRef()
 
-    this.searchQueriesMaxLength = 5
+    this.searchQueriesMaxLength = 5 // Max number of search queries to store
     this.placeHolderText = `Generate tweets for @user`
-    this.openModal = props.openModal
+    this.openModal = props.openModal // Callback to open intro modal
 
     this.state = {
       searchHistory: null,
@@ -31,12 +38,14 @@ class NavBar extends React.Component {
   componentDidMount() {
     this.initSearchHistory()
 
+    // Create listener to detect click to 'focus' search bar
     if (typeof window !== `undefined`) {
       window.addEventListener('mousedown', this.clickCallback, true)
     }
   }
 
   componentWillUnmount() {
+    // Remove listener
     if (typeof window !== `undefined`) {
       window.removeEventListener('mousedown', this.clickCallback, true)
     }
@@ -65,7 +74,7 @@ class NavBar extends React.Component {
                 <img className={`search-history-profile-image`} src={this.state.searchHistory[i].image} alt={`tweet-profile`} />
                 <span className={`search-history-profile-data`}>
                   <div className={`search-history-profile-name`}>{this.state.searchHistory[i].name}</div>
-                  <div className={`search-history-profile-handle`}>{`@` + this.state.searchHistory[i].query}</div>
+                  <div className={`search-history-profile-handle`}>{`@${this.state.searchHistory[i].query}`}</div>
                 </span>
               </span>
               <span className={`search-history-clear clear-single`} onClick={(e) => this.clearSearchQuery(e, i)}>{Clear}</span>
@@ -129,6 +138,7 @@ class NavBar extends React.Component {
     )
   }
 
+  // Parses local storage (if set) and creates state object
   async initSearchHistory() {
     let searchHistory = []
     let searchQueries = []
@@ -138,14 +148,15 @@ class NavBar extends React.Component {
     }
 
     for (let i = 0; i < Math.min(searchQueries.length, this.searchQueriesMaxLength); ++i) {
-      searchHistory.push( await this.getQueryData(searchQueries[i]))
+      searchHistory.push( await this.getQueryData(searchQueries[i]) ) // async call
     }
 
     this.setState({ 'searchHistory': searchHistory })
   }
 
+  // API request to retrieve user data for search history entry
   async getQueryData(query) {
-    return await fetch('https://infinite-scroll-is-not-enough.herokuapp.com/query/' + query, { method: 'Get' })
+    return await fetch(`https://infinite-scroll-is-not-enough.herokuapp.com/query/${query}`, { method: 'Get' })
       .then(res => res.json())
       .then(query_data => {
         return query_data
@@ -159,6 +170,8 @@ class NavBar extends React.Component {
   }
 
   handleClick(e) {
+    // If search bar wrapper contains our clicked target,
+    // set search bar as active, else set as inactive
     if (this.wrapperRef.current.contains(e.target)) {
       this.setState({ searchActive: true })
     }
@@ -167,12 +180,14 @@ class NavBar extends React.Component {
     }
   }
 
+  // Handle clearing a search query
   clearSearchQuery(e, index) {
     e.preventDefault()
     e.stopPropagation()
 
     let searchHistory = []
 
+    // Removes search query index if set, otherwise removes all
     if (index !== true) {
       searchHistory = this.state.searchHistory
       searchHistory.splice(index, 1)
@@ -189,7 +204,9 @@ class NavBar extends React.Component {
     this.setState({ 'searchHistory': searchHistory })
   }
 
+  // Adds search query (to beginning) of array
   addSearchQuery(query) {
+    // Remove leading '@' symbol
     if (query && query[0] === '@') {
       query = query.substr(1)
     }
@@ -203,17 +220,20 @@ class NavBar extends React.Component {
     this.initSearchHistory()
   }
   
+  // Callback to generate tweets for
+  // selected user from search history
   generateUser(handle) {
     this.unfocus()
     this.addSearchQuery(handle)
-    navigate('/tweets?user=' + handle)
+    navigate(`/tweets?user=${handle}`)
   }
 
+  // Detects keypress while search bar is in focus
   onKeyPress(e) {
     if (e.key === 'Enter' && e.target.value !== '') {
       this.unfocus()
       this.addSearchQuery(e.target.value)
-      navigate('/tweets?user=' + e.target.value)
+      navigate(`/tweets?user=${e.target.value}`)
     }
     else if (e.key === 'Escape') {
       this.clearInput()
@@ -221,11 +241,13 @@ class NavBar extends React.Component {
     }
   }
 
+  // Clear input search field
   clearInput() {
     this.inputRef.current.value = ''
     this.inputRef.current.focus()
   }
 
+  // Unfocus all search elements
   unfocus() {
     this.inputRef.current.blur()
     this.clearRef.current.blur()

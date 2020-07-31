@@ -4,18 +4,27 @@ import { navigate } from "gatsby"
 import Icon from "./icon"
 import { Comments, Retweet, Like, Share } from "./icons"
 
+// Navigate to tweet (prompt) on Twitter.com
 function openTweet(handle, id) {
   if (typeof window !== `undefined`) {
-    window.open('https://twitter.com/' + handle + '/status/' + id, '_blank', 'noopener')
+    window.open(`https://twitter.com/${handle}/status/${id}`, `_blank`, `noopener`)
   }
 }
 
+// Gene
 function generateUser(e, handle) {
   e.preventDefault()
   e.stopPropagation()
-  navigate('/tweets?user=' + handle)
+  navigate(`/tweets?user=${handle}`)
 }
 
+/*
+ * Tweet Reply (Prompt) Component
+ * 
+ * Shows the original prompt for a generated tweet.
+ * Likes and retweets correspond to actual tweet. Clicking
+ * on tweet will open original tweet on Twitter.com
+ */
 const Reply = (props) => {
   const tweet = props.tweet
 
@@ -31,7 +40,7 @@ const Reply = (props) => {
 
           <div className={`tweet-name-date`}>
             <span className={`tweet-profile-name`} onClick={(e) => generateUser(e, tweet.handle)}>{tweet.name}</span>
-            <span className={`tweet-profile-handle`} onClick={(e) => generateUser(e, tweet.handle)}>{`@` + tweet.handle}</span>
+            <span className={`tweet-profile-handle`} onClick={(e) => generateUser(e, tweet.handle)}>{`@${tweet.handle}`}</span>
             <span className={`tweet-separator`}>{`·`}</span>
             <span className={`tweet-date`}>{tweet.date}</span>
           </div>

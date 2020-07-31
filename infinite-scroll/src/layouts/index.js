@@ -8,11 +8,16 @@ import Favicon from "../../static/favicon.ico"
 
 import "../styles/layout.scss"
 
+/*
+ * Main Layout Component
+ * 
+ * (wrapper for all pages)
+ */
 class Layout extends React.Component {
   constructor(props) {
     super(props)
 
-    React.Children.only(props.children)
+    React.Children.only(props.children) // Assert single child
 
     this.siteTitle = `Infinite Scroll Is Not Enough`
 
@@ -25,11 +30,13 @@ class Layout extends React.Component {
   render() {
     if (typeof document !== `undefined` && typeof window !== `undefined`) {
       if (this.state.showModal) {
+        // Prevent scrolling
         let offset = window.pageYOffset
         document.body.style.position = `fixed`
         document.body.style.top = `-${offset}px`
       }
       else {
+        // Allow scrolling
         let scrollY = document.body.style.top
         document.body.style.top = ``
         document.body.style.position = ``
@@ -66,10 +73,12 @@ class Layout extends React.Component {
     )
   }
 
+  // Toggles settings/instructional modal
   toggleModal(show = null) {
     this.setState({ showModal: (show ? show : ! this.state.showModal) })
   }
 
+  // Toggles demo/generative modes
   toggleDemo() {
     this.setState({ demoActive: ! this.state.demoActive })
   }

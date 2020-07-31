@@ -82,7 +82,7 @@ $like-animation: url('../../content/assets/like-animation.png');
 .tweet-profile-image-overlay {
   position: absolute;
   max-height: 50px;
-  left: 1.6875px; // calc((50px - 373px * (50 / 400)) / 2), where intrinsic length x height = 373 x 400
+  left: 1.6875px; // calc((50px - 373px * (50 / 400)) / 2); where intrinsic_length x height = 373 x 400
   user-select: none;
 }
 

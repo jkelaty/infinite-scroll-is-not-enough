@@ -5,6 +5,7 @@ import { Comments, Retweet, Liked, Share, Settings } from "./icons"
 
 import "../styles/modal.scss"
 
+// Clears local storage (theme selection, search history, like history)
 function clearLocalStorage() {
   if (typeof window !== `undefined`) {
     window.localStorage.clear()
@@ -12,20 +13,30 @@ function clearLocalStorage() {
   }
 }
 
+/*
+ * Modal Component
+ * 
+ * Contains settings for user including toggling light/dark theme,
+ * toggle demo/generate mode, and clearing all settings (local storage)
+ * as well as about/instructions for app + link to GitHub repo
+ */
 const Modal = ({ showModal, closeModal, demoActive, toggleDemo }) => {
   const [darkMode, toggleDarkMode] = useState(
     (typeof window !== `undefined`)
+      // Chcek if stored in local storage already
       ? ((window.localStorage.getItem('ui-dark-mode') === 'on') || false)
       : false
   )
 
   useEffect(() => {
     if (typeof window !== `undefined`) {
+      // Set preference in local storage
       window.localStorage.setItem('ui-dark-mode', darkMode ? 'on' : 'off')
     }
   })
   
   if (typeof document !== `undefined`) {
+    // Toggle light/dark mode by adding/removing class to html element
     if (darkMode) {
       document.getElementsByTagName('html')[0].classList.add('ui-dark-mode')
     }
