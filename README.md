@@ -1,4 +1,4 @@
-<img src="img/logo.png" align="right" alt="infinite-scroll-logo" width="300" />
+<img src="img/logo.png" align="right" alt="infinite-scroll-logo" width="150" />
 
 # Infinite Scroll Is Not Enough
 
