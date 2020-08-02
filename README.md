@@ -38,6 +38,12 @@ Infinite Scroll Is Not Eough is a web app built to relieve the chronic unease on
 ## Demo
 
 - A working demo of the site hosted on GitHub Pages can be accessed [here!]
+- Key features:
+    - Search history: view a history log of the users you've generated tweets for
+    - Like history: A history of the tweets you've liked are stored locally, so the heart icon will stay active, even after a browser refresh
+    - Toggle between light and dark theme
+    - Share tweets with shareable URL by clicking share icon
+    - View original tweet (prompt) by clicking the replies icon
 
 [here!]: https://jkelaty.github.io/infinite-scroll-is-not-enough/
 
