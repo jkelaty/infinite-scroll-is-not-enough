@@ -12,36 +12,50 @@ const Icon = (props) => {
   let count = []
 
   // Show count next to icon (e.g. number of likes)
-  if (props.curr && props.curr > 0) {
-    let curr_length = props.curr.toString().length
+  if (props.curr) {
+    let curr_count = (props.curr >= 1000) ? `${(props.curr / 1000).toFixed(1)}K` : props.curr.toString()
+    let curr_length = curr_count.length
 
     if (props.prev) {
       // Animate from previous count -> current count
-      let prev_length   = props.prev.toString().length
-      let wrapper_width = (Math.max(curr_length, prev_length) * 8.13 + 5) + 'px' // Ensure count doesn't overflow from container
+      let prev_count = (props.prev >= 1000) ? `${(props.prev / 1000).toFixed(1)}K` : props.prev.toString()
+      let prev_length = prev_count.length
+      let wrapper_width = `${Math.max(curr_length, prev_length) * 8.13 + 5}px` // Ensure count doesn't overflow from container
 
-      count = (
-        <CSSTransition
-          key={props.prev.toString() + props.curr.toString()}
-          in={true}
-          appear={true}
-          timeout={800}>
+      if (prev_count !== curr_count) {
+        count = (
+          <CSSTransition
+            key={`${prev_count}:${curr_count}`}
+            in={true}
+            appear={true}
+            timeout={800}>
 
-          <span className={`icon-count-wrapper` + ((props.prev > props.curr) ? ` reverse` : ``)} style={{width: wrapper_width}}>
-            <span className={`icon-count curr-count`}>{props.curr}</span>
-            <span className={`icon-count prev-count`}>{props.prev}</span>
+            <span className={`icon-count-wrapper` + ((props.prev > props.curr) ? ` reverse` : ``)} style={{width: wrapper_width}}>
+              <span className={`icon-count curr-count`}>{curr_count}</span>
+              <span className={`icon-count prev-count`}>{prev_count}</span>
+            </span>
+            
+          </CSSTransition>
+        )
+      }
+      else {
+        // Show count without animation
+        let wrapper_width = `${curr_length * 8.13 + 5}px`
+  
+        count = (
+          <span className={`icon-count-wrapper`} style={{width: wrapper_width}}>
+            <span className={`icon-count`}>{curr_count}</span>
           </span>
-          
-        </CSSTransition>
-      )
+        )
+      }
     }
     else {
       // Show count without animation
-      let wrapper_width = (curr_length * 8.13 + 5) + 'px'
+      let wrapper_width = `${curr_length * 8.13 + 5}px`
 
       count = (
         <span className={`icon-count-wrapper`} style={{width: wrapper_width}}>
-          <span className={`icon-count`}>{props.curr}</span>
+          <span className={`icon-count`}>{curr_count}</span>
         </span>
       )
     }

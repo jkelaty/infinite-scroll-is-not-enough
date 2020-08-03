@@ -41,7 +41,7 @@ def getPrompts(user, count=1):
                 for i in range(int(entry['indices'][0]), int(entry['indices'][1])):
                    new_text[i] = '\0'
         
-        result[index]['full_text'] = ''.join(new_text).replace('\0', '')
+        result[index]['full_text'] = ''.join(new_text).replace('\0', '') + '. '
         tweets.append(result[index]) # Selects random tweet from list and appends to our list of prompts
 
     return tweets

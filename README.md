@@ -23,7 +23,6 @@ Infinite Scroll Is Not Eough is a web app built to relieve the chronic unease on
     - **@pixelatedboat**
     - **@danadonly**
     - **@jaboukie**
-    - **@RachelMComedy**
 
 <div align="center">
     <img src="img/demo.png" alt="demo-example" width="400">

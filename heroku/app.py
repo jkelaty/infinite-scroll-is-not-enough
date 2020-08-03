@@ -396,6 +396,7 @@ def generate_tweets_demo(user, page):
         SELECT *
         from demo
         where handle = %s
+        ORDER BY id DESC
         OFFSET %s
         FETCH NEXT 10 ROWS ONLY
         """, (user, int(page) * 10,))
