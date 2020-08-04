@@ -46,7 +46,7 @@ Infinite Scroll Is Not Eough is a web app built to relieve the chronic unease on
 
 [here!]: https://jkelaty.github.io/infinite-scroll-is-not-enough/
 
-## Contributers
+## Contributors
 
 - Jonathan Kelaty
 - Xuejin Gao
