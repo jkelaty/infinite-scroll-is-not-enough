@@ -46,6 +46,18 @@ Infinite Scroll Is Not Eough is a web app built to relieve the chronic unease on
 
 [here!]: https://jkelaty.github.io/infinite-scroll-is-not-enough/
 
+## Helpful Resources
+
+- Here's a list of resrouces we found helpful while working on this project:
+    - Run_generation.py
+        - https://github.com/huggingface/transformers/blob/master/examples/text-generation/run_generation.py
+    - Collaboratory Notebook for finetuning
+        - https://colab.research.google.com/drive/1VLG8e7YSEwypxU-noRNhsv5dW4NfTGce
+    - Resource for generating both conditional and unconditional text, and training custom model
+        - https://github.com/nshepperd/gpt-2
+    - GPT2 offering several possible follow-up words
+        - https://demo.allennlp.org/next-token-lm?text=I%27d%20like%20to%20eat%20an
+
 ## Contributors
 
 - Jonathan Kelaty
