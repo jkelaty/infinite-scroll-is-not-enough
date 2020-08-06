@@ -80,7 +80,7 @@ const Modal = ({ showModal, closeModal, demoActive, toggleDemo }) => {
 
               <h1 className={`info-header about`}>{`About`}</h1>
               <div className={`info-about`}>
-                {/* <p className={`warn`}>{`Notice: Tweet generation has been disabled`}</p> */}
+                <p className={`warn`}>{`Notice: Tweet generation has been disabled`}</p>
                 <p className={`left`}>{`In these uncertain times, many of us have turned to social media, especially Twitter, to fill our lives with entertainment while a pandemic sends ripples of unease through the masses.`}</p>
                 <p className={`left`}>{`Unfortunately, a person can only produce so many tweets, and if you were to scroll through an individual's Twitter profile for long enough, reaching the end is inevitable.`}</p>
                 <p className={`left`}>{`If you have found yourself in such a predicament, rejoice! You have stumbled upon the solution to all your problems! 'Infinite Scroll Is Not Enough' lets you generate tweets using an advanced Neural Language Model AI which generates tweets based on your favorite Twitter user's tweet history.`}</p>
