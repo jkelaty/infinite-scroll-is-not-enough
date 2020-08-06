@@ -5,5 +5,4 @@ infinite-scroll/public/
 
 mongo/.env
 mongo/.flaskenv
-heroku/credentials.py
 heroku/__pycache__/
